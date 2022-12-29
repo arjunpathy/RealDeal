@@ -1,0 +1,31 @@
+{
+  "name": "fake-product-identification",
+  "version": "1.0.0",
+  "description": "project on blockchain",
+  "main": "index.js",
+  "scripts": {
+    "dev": "lite-server",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/maddydevgits/fake-product-identification-blockchain.git"
+  },
+  "keywords": [
+    "blockchain",
+    "makeskilled"
+  ],
+  "author": "Maddy",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/maddydevgits/fake-product-identification-blockchain/issues"
+  },
+  "homepage": "https://github.com/maddydevgits/fake-product-identification-blockchain#readme",
+  "devDependencies": {
+    "html5-qrcode": "^2.2.0",
+    "lite-server": "^2.6.1"
+  },
+  "dependencies": {
+    "web3": "^1.8.1"
+  }
+}
