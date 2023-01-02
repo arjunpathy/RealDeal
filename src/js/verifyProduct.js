@@ -1,11 +1,11 @@
-const Web3 = require('web3')
-
 App = {
 
     web3Provider: null,
     contracts: {},
+    scannedData: '',
 
-    init: async function() {
+    init: async function(data) {
+        scannedData= JSON.parse(data);
         return await App.initWeb3();
     },
 
@@ -41,24 +41,17 @@ App = {
             App.contracts.product.setProvider(App.web3Provider);
         });
 
-        return App.bindEvents();
+        return App.fakeProduct();
     },
 
-    bindEvents: function() {
-
-        $(document).on('click','.btn-register',App.registerProduct);
-    },
-
-    registerProduct: (event) => {
-        event.preventDefault();
+    fakeProduct: () =>{
 
         var productInstance;
 
-        var productId = document.getElementById('productId').value;
-        var pOwner = document.getElementById('pOwner').value;
-        var pName = document.getElementById('pName').value;
-        var pDesc = document.getElementById('pDesc').value;
-        
+        var productId = scannedData.productId;
+        var ownerId = scannedData.pOwner;
+        console.log(productId,ownerId);
+
         web3.eth.getAccounts(function(error,accounts){
 
             if(error) {
@@ -69,28 +62,43 @@ App = {
             console.log(account);
 
             App.contracts.product.deployed().then(function(instance){
-                productInstance=instance;
-                return productInstance.setProduct(web3.fromAscii(productId),web3.fromAscii(pOwner),web3.fromAscii(pName),web3.fromAscii(pDesc),
-                {from:account});
-            }).then((result) => {
-                console.log(result);
-                window.location.reload();
-                
-                document.getElementById('productId').innerHTML='';
-                document.getElementById('pOwner').innerHTML='';
-                document.getElementById('pName').innerHTML='';
-                document.getElementById('pDesc').innerHTML='';
 
-            }).catch((err) =>{
+                productInstance=instance;
+                return productInstance.verifyFakeness(web3.fromAscii(productId),web3.fromAscii(ownerId),{from:account});
+
+            }).then(function(result){
+
+                console.log(result);
+                var productId;
+                var pOwner;
+                var pStatus;
+
+                
+                productId=web3.toAscii(result[0]);
+                     
+                    pOwner=web3.toAscii(result[1]);
+                
+
+                
+                    pStatus=web3.toAscii(result[2]);
+                
+
+                var t= "";
+                
+
+                    var tr="<tr>";
+                    tr+="<td>"+productId+"</td>";
+                    tr+="<td>"+pOwner+"</td>";
+                    tr+="<td>"+pStatus+"</td>";
+                    tr+="</tr>";
+                    t+=tr;
+                
+                document.getElementById('logdata').innerHTML = t;
+
+            }).catch(function(err){
+
                 console.log(err.message);
             });
         });
     }
 };
-
-$(() => {
-
-    $(window).load(function() {
-        App.init();
-    })
-})

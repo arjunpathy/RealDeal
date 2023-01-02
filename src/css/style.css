@@ -384,10 +384,21 @@ progress {
   margin-top: 1%!important;
 }
 
-
-
-
-
+.qr-img{
+  height: 50px;
+  width: 50px;
+}
+.scanner-div{
+display: flex;
+padding: 5%;
+}
+.scan-table{
+  width: 60%;
+  margin-left: 2%;
+}
+.pidGenerate{
+cursor: pointer;
+}
 
 
 

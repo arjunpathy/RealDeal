@@ -5,11 +5,11 @@ contract product {
     bytes32[] owners;
     bytes32[] prodName;
     bytes32[] prodDesc;
-    bytes32[] pStatus;
+    bytes32[] qr;
 
     mapping(bytes32 => bool) public vProducts;
 
-    function setProduct(bytes32 productId, bytes32 pOwner, bytes32 pName, bytes32 pDesc) public{
+    function registerProduct(bytes32 productId, bytes32 pOwner, bytes32 pName, bytes32 pDesc) public{
 
         require(!vProducts[productId]);
         vProducts[productId] = true;
@@ -19,13 +19,13 @@ contract product {
         prodName.push(pName);
         prodDesc.push(pDesc);
 
-        pStatus.push("Available");
+        // qr.push(qrData);
                 
     }
 
 
-    function viewProducts () public view returns(bytes32[] memory, bytes32[] memory,bytes32[] memory, bytes32[] memory,bytes32[] memory) {
-        return(products, prodName, prodDesc, owners, pStatus);
+    function viewProducts () public view returns(bytes32[] memory, bytes32[] memory,bytes32[] memory, bytes32[] memory) {
+        return(products, prodName, prodDesc, owners);
     }
 
 
@@ -40,31 +40,31 @@ contract product {
         }   
         if(index >= 0){
             owners[uint(index)] = buyerId;
-            pStatus[uint(index)]="NA";
+            // pStatus[uint(index)]="NA";
             return("Ownership Transferred");
         }else {revert("Invalid Product or Owner ID");}
     }
 
-    function verifyFakeness(bytes32 vProductId) public view returns(bytes32,bytes32,bytes32) {
+    function verifyFakeness(bytes32 vProductId,bytes32 ownerId) public view returns(bytes32,bytes32,bytes32) {
 
-        bool status=false;
+        bool itemFound=false;
         uint i;
-        uint j=0;
+        uint index=0;
 
         if(products.length>0) {
             for(i=0;i<products.length;i++) {
                 if(products[i]==vProductId) {
-                    j=i;
-                    status=true;
+                    index=i;
+                    itemFound=true;
                 }
             }
         }
 
-        if(status==true) {
-                if(pStatus[j]=="Available")
-                    return(products[j],owners[j],"Original");
+        if(itemFound == true) {
+                if(owners[index] == ownerId)
+                    return(products[index],owners[index],"Original");
                 else 
-                    return (products[j],owners[j],"Fake");
+                    return (products[index],owners[index],"Fake");
         } else {
                 return("NA","NA","Fake");
         }
