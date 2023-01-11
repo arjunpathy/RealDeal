@@ -1,4 +1,5 @@
 const Web3 = require('web3');
+const baseurl = "http://localhost:8080";
 
 App = {
 
@@ -59,6 +60,7 @@ App = {
         var pOwner = document.getElementById('pOwner').value;
         var pName = document.getElementById('pName').value;
         var pDesc = document.getElementById('pDesc').value;
+        let qrData = "";
         
         web3.eth.getAccounts(function(error,accounts){
 
@@ -72,17 +74,54 @@ App = {
             App.contracts.product.deployed().then(async (instance)=>{
                 productInstance=instance;
 
-                var qrData = await generateQR({productId,pOwner,pName,pDesc});
+                qrData = await generateQR({productId,pOwner,pName,pDesc});
                 console.log(qrData)
 
                  return productInstance.registerProduct(web3.fromAscii(productId),web3.fromAscii(pOwner),web3.fromAscii(pName),web3.fromAscii(pDesc),{from:account});
             }).then((result) => {
-                console.log(result);
+                console.log("result : ",result);
+
+                var myHeaders = new Headers();
+                myHeaders.append("Content-Type", "application/json");
+                myHeaders.append("Access-Control-Request-Headers", "*");
+                myHeaders.append("Access-Control-Allow-Origin", "*");
+            
+                var txnData = JSON.stringify({
+                  txnId : result.tx,
+                  productId:productId,
+                  ownerId: pOwner,
+                  ownerAddress: result.receipt.from,
+              });
+
+              var prodData = JSON.stringify({
+                productId: productId,
+                productName: pName,
+                productDesc: pDesc,
+                currentOwner: pOwner,
+                qr: qrData
+            });
+            
+                var requestOptions = {
+                  method: 'POST',
+                  headers: myHeaders,
+                  body: txnData,
+                  redirect: 'follow'
+                };
+
                 // window.location.reload();
-                
+                fetch(`${baseurl}/transaction`, requestOptions)
+                .then(response => response.text())
+                .then(result => {
+                  requestOptions.body = prodData;
+                  fetch(`${baseurl}/product`, requestOptions).then(res => console.log(res)).catch(error => console.log('error', error));
+                })
+                .catch(error => console.log('error', error));
+
+
+
                 document.getElementById('productId').innerHTML='';
                 document.getElementById('pOwner').innerHTML='';
-                document.getElementById('pName').innerHTML='';
+                document.getElementById('pName').innerHTML=''; 
                 document.getElementById('pDesc').innerHTML='';
 
             }).catch((err) =>{
@@ -90,9 +129,11 @@ App = {
             });
         });
     },
+    
     generateProductID: () =>{
       document.getElementById('productId').value = Math.floor(100000000 + Math.random() * 900000000);
     } 
+
 };
 
 const generateQR = async text => {

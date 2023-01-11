@@ -18,9 +18,7 @@ contract product {
         owners.push(pOwner);
         prodName.push(pName);
         prodDesc.push(pDesc);
-
-        // qr.push(qrData);
-                
+        // qr.push(qrData);                
     }
 
 
