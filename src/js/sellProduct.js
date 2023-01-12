@@ -82,15 +82,16 @@ App = {
         var txnData = JSON.stringify({
           txnId: result.tx,
           productId: productId,
-          ownerId: pOwner,
+          ownerId: pBuyer,
           ownerAddress: result.receipt.from,
         });
 
         await saveTransaction(txnData).then(async () => {
           console.log(result);
-          await updateProduct({productId,ownerId:pBuyer}).catch((err) => console.log(err.message))
-          // window.location.reload();
-          document.getElementById('productId').innerHTML = '';
+          await updateProduct({productId, ownerId:pBuyer}).then( ()=>{
+            // window.location.reload();
+            document.getElementById('productId').innerHTML = '';
+          }).catch((err) => console.log(err.message))
         }).catch((err) => console.log(err.message))
       }).catch(function (err) {
         console.log(err.message);
@@ -98,6 +99,7 @@ App = {
     });
   }
 };
+
 let saveTransaction =  (txnData) => {
   const baseurl = "http://localhost:8080";
   var myHeaders = new Headers();

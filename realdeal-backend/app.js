@@ -63,6 +63,26 @@ app.post('/transaction', (req, res) => {
     });
 });
 
+app.get("/transactions/product/:id",(req,res)=>{
+
+  let data = JSON.stringify({
+    database: "realdeal",
+    dataSource: "Cluster0",
+    collection: "transactions",
+    "filter": { productId : req.params['id'] },
+  });
+  config.url = `${baseurl}/action/find`,
+  config.data = data;
+
+  console.log(config)
+  axios(config).then(function (response) {
+    console.log(JSON.stringify(response.data));
+    res.send(response.data)
+  }).catch(function (error) {
+      console.log(error);
+    });
+});
+
 
 // PRODUCTS
 app.put('/product', (req, res) => {
@@ -100,8 +120,7 @@ app.post('/product', (req, res) => {
   axios(config).then(function (response) {
     console.log(JSON.stringify(response.data));
     res.send(response.data)
-  })
-    .catch(function (error) {
+  }).catch(function (error) {
       console.log(error);
     });
 });
@@ -122,8 +141,7 @@ app.post('/products',(req,res)=>{
   axios(config).then(function (response) {
     console.log(JSON.stringify(response.data));
     res.send(response.data)
-  })
-    .catch(function (error) {
+  }).catch(function (error) {
       console.log(error);
     });
 });

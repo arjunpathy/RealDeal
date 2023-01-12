@@ -56,7 +56,7 @@
 		<div class="container">
 			<h2>Tagged Products</h2>
 			<p>Following were the products tagged through Blockchain Network</p>
-			<div  style="height: 450px;overflow: scroll;">
+			<div style="height: 450px;overflow: scroll;">
 				<table class="table table-dark table-striped table-bordered">
 					<thead>
 						<tr>
@@ -76,6 +76,21 @@
 				<p>Your address is <b id="add"></b></p>
 			</center>
 		</div>
+
+			<div id="custom-modal" onclick="hideModal(event, this)">
+				<table class="table table-dark table-striped table-bordered">
+					<thead>
+						<tr>
+							<td>Previous Owner</td>
+							<td>Current Owner</td>
+							<td>Txn Id</td>
+						</tr>
+					</thead>
+					<tbody id="transactionTable">
+
+					</tbody>
+				</table>
+			</div>
 	</section>
 
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
