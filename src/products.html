@@ -2,7 +2,7 @@
 <html lang="en">
 
 <head>
-	<title>Fake Product Scanner</title>
+	<title>RealDeal</title>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 	<link href='https://fonts.googleapis.com/css?family=Roboto:400,100,300,700' rel='stylesheet' type='text/css'>
@@ -76,21 +76,29 @@
 				<p>Your address is <b id="add"></b></p>
 			</center>
 		</div>
+		<div class="flip-card">
+			<div class="flip-card-inner">
+				<div class="flip-card-front">
+					<table class="table table-dark table-striped table-bordered">
+						<thead>
+							<tr>
+								<td>Previous Owner</td>
+								<td>Current Owner</td>
+								<td>Txn Id</td>
+							</tr>
+						</thead>
+						<tbody id="transactionTable">
 
-			<div id="custom-modal" onclick="hideModal(event, this)">
-				<table class="table table-dark table-striped table-bordered">
-					<thead>
-						<tr>
-							<td>Previous Owner</td>
-							<td>Current Owner</td>
-							<td>Txn Id</td>
-						</tr>
-					</thead>
-					<tbody id="transactionTable">
-
-					</tbody>
-				</table>
+						</tbody>
+					</table>
+				</div>
+				<div class="flip-card-back">
+					<h1>John Doe</h1>
+					<p>Architect & Engineer</p>
+					<p>We love that guy</p>
+				</div>
 			</div>
+		</div>
 	</section>
 
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>

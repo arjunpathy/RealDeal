@@ -22,14 +22,9 @@ var config = {
 
 // USERS
 app.post('/user', (req, res) => {
-  let data = JSON.stringify({
-    "database": "realdeal",
-    "dataSource": "Cluster0",
-    collection: 'users',
-    document: req.body
-  });
+  let data = {"database": "realdeal","dataSource": "Cluster0",collection: 'users', document: req.body,};
   config.url = `${baseurl}/action/insertOne`,
-    config.data = data;
+  config.data = JSON.stringify(data);
 
   console.log(config)
   axios(config).then(function (response) {
@@ -40,6 +35,21 @@ app.post('/user', (req, res) => {
       console.log(error);
     });
 })
+
+app.post('/login',(req,res)=>{
+
+  let data = JSON.stringify({"database": "realdeal","dataSource": "Cluster0", "filter": { "id" : req.body['id'], "password" : req.body['password'] },collection: 'users', });
+  config.url = `${baseurl}/action/find`,
+  config.data = data;
+
+  console.log(config)
+  axios(config).then(function (response) {
+    console.log(response.data);
+    res.send(response.data.documents.length !== 0)
+  }).catch(function (error) {
+      console.log(error);
+    });
+});
 
 
 // TRANSACTIONS

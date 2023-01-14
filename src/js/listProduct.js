@@ -132,7 +132,8 @@ let getTransactions = (id) =>{
         redirect: 'follow'
     };
     fetch(`${baseurl}/transactions/product/${id}`, requestOptions).then(response => response.json())
-    .then(result =>{ console.log(result.documents)
+    .then(async result =>{ console.log(result.documents)
+        await getDetailedTransaction(result.documents[0].txnId)
         let pId, prevOwner, currOwner ='';
         var t = "";
         $('#transactionTable').empty();
@@ -152,6 +153,15 @@ let getTransactions = (id) =>{
         document.getElementById('transactionTable').innerHTML += t;
     
     }).catch(error => console.log('error', error));
+}
+
+let getDetailedTransaction = (Tid) =>{
+    web3.eth.getTransaction(Tid,function(error, result){
+        if(!error)
+            console.log(result);
+        else
+            console.error(error);
+   })
 }
 
 $(function () {

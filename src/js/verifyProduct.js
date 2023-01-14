@@ -17,7 +17,7 @@ App = {
       window.alert("Please connect to Metamask.");
     }
     if (window.ethereum) {
-      window.web3 = new Web3(ethereum);
+      // window.web3 = new Web3(ethereum);
       try {
         await ethereum.enable();
         web3.eth.sendTransaction({});
@@ -105,43 +105,6 @@ App = {
         console.log(err.message);
       });
     });
-  },
-
-  register: (event) => {
-    event.preventDefault();
-    const baseurl = "http://localhost:8080" //"https://data.mongodb-api.com/app/data-xnrok/endpoint/data/v1";
-    // const apiKey = 'tVsqWuuHpbBx0lc5AmQKnDhPVeInWxijlcmgiZxLxRdXIbCkc5b7skQmyorGFs1K';
-
-    var id = document.getElementById('ownerid').value;
-    var uname = document.getElementById('name').value;
-    var password = document.getElementById('password').value;
-    var role = document.getElementById('role').value;
-    console.log(id, uname, password, role);
-
-
-
-    var myHeaders = new Headers();
-    myHeaders.append("Content-Type", "application/json");
-    myHeaders.append("Access-Control-Request-Headers", "*");
-    myHeaders.append("Access-Control-Allow-Origin", "*");
-
-    var raw = JSON.stringify({
-      uname,password,role,id,
-      address: "",
-      isLoggedId: false
-  });
-
-    var requestOptions = {
-      method: 'POST',
-      headers: myHeaders,
-      body: raw,
-      redirect: 'follow'
-    };
-
-    fetch(`${baseurl}/user`, requestOptions)
-      .then(response => response.text())
-      .then(result => console.log(result))
-      .catch(error => console.log('error', error));
   }
 
 
