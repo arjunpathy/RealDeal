@@ -1,122 +1,44 @@
-<!doctype html>
-<html lang="en">
-
+<!DOCTYPE html>
+<html>
 <head>
 	<title>RealDeal</title>
-	<meta charset="utf-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-	<link href='https://fonts.googleapis.com/css?family=Roboto:400,100,300,700' rel='stylesheet' type='text/css'>
-	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
-	<link rel="stylesheet" href="css/style.css">
+	<link rel="stylesheet" type="text/css" href="slide navbar style.css">
+<link href="https://fonts.googleapis.com/css2?family=Jost:wght@500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
 
 </head>
+<body class="loginbody">
+	<div class="main">  	
+		<input type="checkbox" id="chk" aria-hidden="true">
 
-<body>
-	<section class="ftco-section">
-		<div class="container-fluid px-md-5">
-			<div class="row justify-content-between">
-				<div class="col-md-8 order-md-last">
-					<div class="row">
-						<div class="col-md-6 text-center">
-							<a class="navbar-brand" href="index.html">Fake Product Identification <span>through
-									Blockchain</span></a>
-						</div>
-						<div class="col-md-6 d-md-flex justify-content-end mb-md-0 mb-3">
-							<form action="#" class="searchform order-lg-last">
-
-							</form>
-						</div>
-					</div>
-				</div>
-				<div class="col-md-4 d-flex">
-				</div>
+			<div class="signup">
+				<form>
+					<label class="loginlabel" for="chk" aria-hidden="true">Sign up</label>
+					<input class="logininput" id = "signup_uname" type="text" name="txt" placeholder="User Name" required="">
+					<input class="logininput" id = "signup_uid" type="text" minlength="6" name="txt" placeholder="User Id" required="">
+					<input class="logininput" id = "signup_pwd" type="password" minlength="6" name="pswd" placeholder="Password" required="">
+					<input class="logininput" id = "signup_addr" type="text" name="addr" placeholder="Address" required="">
+                    <select class="logininput" name="role" id="signup_role">
+						<option value="manufacturer">Manufacturer</option>
+                        <option value="seller">Seller</option>
+                        <option value="consumer">Consumer</option>
+                    </select>
+					<input type="submit" class="loginbutton" id="signup" onclick="registerUser();"></input>
+				</form>
 			</div>
-		</div>
-		<nav class="navbar navbar-expand-lg navbar-dark ftco_navbar bg-dark ftco-navbar-light" id="ftco-navbar">
-			<div class="container-fluid">
 
-				<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#ftco-nav"
-					aria-controls="ftco-nav" aria-expanded="false" aria-label="Toggle navigation">
-					<span class="fa fa-bars"></span> Menu
-				</button>
-				<div class="collapse navbar-collapse" id="ftco-nav">
-					<ul class="navbar-nav m-auto">
-						<li class="nav-item active"><a href="index.html" class="nav-link">Home</a></li>
-						<li class="nav-item"><a href="manufacturer.html" class="nav-link">Register</a></li>
-						<li class="nav-item"><a href="products.html" class="nav-link">Products</a></li>
-						<li class="nav-item"><a href="sellproduct.html" class="nav-link">Sell Product</a></li>
-					</ul>
-				</div>
+			<div class="login">
+				<form>
+					<label class="loginlabel" id="loginlabel" for="chk" aria-hidden="true">Login</label>
+					<input class="logininput" id = "login_uid" type="txt" minlength="6" name="txt" placeholder="User Id" required="">
+					<input class="logininput" id = "login_pwd" minlength="6" type="password" name="pswd" placeholder="Password" required="">
+					<button class="loginbutton" id="loginbtn" onclick="loginUser();">Login</button>
+				</form>
 			</div>
-		</nav>
-		<!-- END nav -->
-
-	</section>
-	<div class="container scanner-div">
-
-		<div>
-			<center>
-				<div id="qr-reader" style="width:300px"></div>
-				<div id="qr-reader-results"></div>
-			</center>
-		</div>
-		<div class="scan-table">
-			<table class="table">
-				<thead>
-					<tr>
-						<th>Product ID</th>
-						<th>Current Owner</th>
-						<th>Status</th>
-					</tr>
-				</thead>
-				<tbody id="logdata">
-
-				</tbody>
-			</table>
-		</div>
 	</div>
-
-	<script src="js/jquery.min.js"></script>
-	<script src="js/popper.js"></script>
-	<script src="js/bootstrap.min.js"></script>
-	<script src="js/main.js"></script>
-	<script src="https://unpkg.com/html5-qrcode"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 	<script src="js/web3.min.js"></script>
 	<script src="js/truffle-contract.js"></script>
-	<script src="js/verifyProduct.js"></script>
-	<script>
-		function docReady(fn) {
-			// see if DOM is already available
-			if (document.readyState === "complete"
-				|| document.readyState === "interactive") {
-				// call on next available tick
-				setTimeout(fn, 1);
-			} else {
-				document.addEventListener("DOMContentLoaded", fn);
-			}
-		}
-
-		docReady(function () {
-			var resultContainer = document.getElementById('qr-reader-results');
-			var lastResult, countResults = 0;
-			function onScanSuccess(decodedText, decodedResult) {
-				if (decodedText !== lastResult) {
-					++countResults;
-					lastResult = decodedText;
-					// Handle on success condition with the decoded message.
-					var audio = new Audio('beep.wav');
-					audio.play();
-					console.log(`Scan result ${decodedText}`, decodedResult);
-					document.getElementById('qr-reader-results').innerHTML = decodedText;
-					App.init(decodedText);
-				}
-			}
-
-			var html5QrcodeScanner = new Html5QrcodeScanner(
-				"qr-reader", { fps: 10, qrbox: 250 });
-			html5QrcodeScanner.render(onScanSuccess);
-		});
-	</script>
+    <script src="js/login.js"></script>
 </body>
-
 </html>

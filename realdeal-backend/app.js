@@ -30,8 +30,21 @@ app.post('/user', (req, res) => {
   axios(config).then(function (response) {
     console.log(JSON.stringify(response.data));
     res.send(response.data)
-  })
-    .catch(function (error) {
+  }).catch(function (error) {
+      console.log(error);
+    });
+})
+
+app.get('/user/:id',(req,res)=>{
+  let data = JSON.stringify({"database": "realdeal","dataSource": "Cluster0", "filter": { "id" : req.params['id']},collection: 'users', });
+  config.url = `${baseurl}/action/find`,
+  config.data = data;
+
+  console.log(config)
+  axios(config).then(function (response) {
+    delete response.data.documents[0].password
+    res.send(response.data.documents)
+  }).catch(function (error) {
       console.log(error);
     });
 })
