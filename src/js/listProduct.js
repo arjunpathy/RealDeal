@@ -1,6 +1,7 @@
 App = {
     web3Provider: null,
     contracts: {},
+    docs: [],
 
     init: async function () {
         return await App.initWeb3();
@@ -63,10 +64,10 @@ App = {
                 let data = formatData(result)
 
                 console.log(data.productIds)
-                let ids = data.productIds.map(ele => { return ele.replace(/\0.*$/g,'');});
+                let ids = data.productIds.map(ele => { return ele.replace(/\0.*$/g, ''); });
 
-                await getProdQR(ids).then(function(response) {return response.json();}).then(function(res) {
-                    let QrData = res.documents.map(ele =>{return ele.qr});
+                await getProdQR(ids).then(function (response) { return response.json(); }).then(function (res) {
+                    let QrData = res.documents.map(ele => { return ele.qr });
                     var t = "";
                     for (var i = 0; i < data.productIds.length; i++) {
                         var tr = "<tr>";
@@ -74,13 +75,13 @@ App = {
                         tr += "<td>" + data.pNames[i] + "</td>";
                         tr += "<td>" + data.pDesc[i] + "</td>";
                         tr += "<td>" + data.ownerIds[i] + "</td>";
-                        tr += "<td> <img src =" + QrData[i] + " onclick=getTransactions("+data.productIds[i]+") class ='qr-img' /></td>";
+                        tr += "<td> <img src =" + QrData[i] + " data-toggle='modal' data-target='#exampleModalCenter' onclick=getTransactions(" + data.productIds[i] + ") class ='qr-img' /></td>";
                         tr += "</tr>";
                         t += tr;
                     }
                     document.getElementById('logdata').innerHTML += t;
                     document.getElementById('add').innerHTML = account;
-                }).catch(function (err) {console.log(err.message);})
+                }).catch(function (err) { console.log(err.message); })
             }).catch(function (err) {
                 console.log(err.message);
             })
@@ -93,7 +94,7 @@ let formatData = (result) => {
     let data = {};
     let params = ['productIds', 'pNames', 'pDesc', 'ownerIds', 'qr'];
     for (let i = 0; i < result.length; i++) {
-        data[params[i]] = result[i].map(ele => { return web3.toAscii(ele).replace(/\0.*$/g,'') });
+        data[params[i]] = result[i].map(ele => { return web3.toAscii(ele).replace(/\0.*$/g, '') });
     }
     return data;
 }
@@ -119,9 +120,10 @@ let getProdQR = (ids) => {
     return fetch(`${baseurl}/products`, requestOptions)
 }
 
-let getTransactions = (id) =>{
+let getTransactions = (id) => {
     const baseurl = "http://localhost:8080";
     var myHeaders = new Headers();
+    $("#exampleModalCenterTitle").text(`Product : ${id}`);
     myHeaders.append("Content-Type", "application/json");
     myHeaders.append("Accept", "application/json");
     myHeaders.append("Access-Control-Request-Headers", "*");
@@ -132,37 +134,58 @@ let getTransactions = (id) =>{
         redirect: 'follow'
     };
     fetch(`${baseurl}/transactions/product/${id}`, requestOptions).then(response => response.json())
-    .then(async result =>{ console.log(result.documents)
-        await getDetailedTransaction(result.documents[0].txnId)
-        let pId, prevOwner, currOwner ='';
-        var t = "";
-        $('#transactionTable').empty();
+        .then(async result => {
+            console.log(result.documents)
 
-        for (var i = 0; i < result.documents.length; i++) {
-            pId = result.documents[i].productId;
-            currOwner = result.documents[i].ownerId;
-            prevOwner = (i == 0) ? currOwner :  result.documents[i-1].ownerId;
+            // let txn = await getDetailedTransaction(result.documents[0].txnId)
+            let pId, prevOwner, currOwner = '';
 
-            var tr = "<tr> <td>" + prevOwner + "</td>";
-            tr += "<td>" + currOwner + "</td>";
-            tr += "<td>" + result.documents[i].txnId + "</td>";
-            tr += "</tr>";
-            t += tr;
 
-        }
-        document.getElementById('transactionTable').innerHTML += t;
-    
-    }).catch(error => console.log('error', error));
+            var t = "";
+            $('#transactionTable').empty();
+            App.docs = result.documents;
+
+            for (var i = 0; i < result.documents.length; i++) {
+                pId = result.documents[i].productId;
+                currOwner = result.documents[i].ownerId;
+                prevOwner = (i == 0) ? currOwner : result.documents[i - 1].ownerId;
+
+
+                var tr = "<tr onclick= getDetailedTransaction(" + i + ") ><td>" + prevOwner + "</td>";
+                tr += "<td>" + currOwner + "</td>";
+                tr += "<td style='font-size: 10px;' > <i> " + result.documents[i].txnId + " </i> </td>";
+                tr += "</tr>";
+                t += tr;
+
+            }
+            document.getElementById('transactionTable').innerHTML += t;
+        }).catch(error => console.log('error', error));
 }
 
-let getDetailedTransaction = (Tid) =>{
-    web3.eth.getTransaction(Tid,function(error, result){
-        if(!error)
+let getDetailedTransaction = (index) => {
+    let Tid = App.docs[index].txnId;
+    console.log(Tid)
+    web3.eth.getTransaction(Tid, function (error, result) {
+        if (!error) {
             console.log(result);
-        else
+            $("#txnFrom").text(result.from);
+            $("#txnTo").text(result.to);
+            $("#gas").text(result.gas);
+            $("#txnHash").text(result.hash);
+            $("#blockHash").text(result.blockHash);
+            $("#blockNumber").text(result.blockNumber);
+        } else
             console.error(error);
-   })
+    })
 }
+var cards = document.querySelectorAll('.card');
+
+[...cards].forEach((card)=>{
+  card.addEventListener( 'click', function() {
+    card.classList.toggle('is-flipped');  
+  });
+});
+
 
 $(function () {
     $(window).load(function () {

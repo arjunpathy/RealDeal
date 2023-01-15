@@ -3,6 +3,8 @@ App = {
   web3Provider: null,
   contracts: {},
   scannedData: '',
+  historyTable : "",
+
 
   init: async function (data) {
     scannedData = JSON.parse(data);
@@ -11,26 +13,26 @@ App = {
 
   initWeb3: async () => {
     if (typeof web3 !== "undefined") {
-      App.web3Provider = web3.currentProvider;
-      web3 = new Web3(web3.currentProvider);
+        App.web3Provider = web3.currentProvider;
+        web3 = new Web3(web3.currentProvider);
     } else {
-      window.alert("Please connect to Metamask.");
+        window.alert("Please connect to Metamask.");
     }
     if (window.ethereum) {
-      // window.web3 = new Web3(ethereum);
-      try {
-        await ethereum.enable();
-        web3.eth.sendTransaction({});
-      } catch (error) { }
+        window.web3 = new Web3(ethereum);
+        try {
+            await ethereum.enable();
+            web3.eth.sendTransaction({});
+        } catch (error) { }
     } else if (window.web3) {
-      App.web3Provider = web3.currentProvider;
-      window.web3 = new Web3(web3.currentProvider);
-      web3.eth.sendTransaction({});
+        App.web3Provider = web3.currentProvider;
+        window.web3 = new Web3(web3.currentProvider);
+        web3.eth.sendTransaction({});
     } else {
-      console.log("Non-Ethereum browser detected. You should consider trying MetaMask!");
+        console.log("Non-Ethereum browser detected. You should consider   trying MetaMask!");
     }
     return App.initContract();
-  },
+},
 
   initContract: function () {
 
@@ -44,8 +46,6 @@ App = {
     return App.bindEvents();
   },
   bindEvents: () => {
-
-    $(document).on('click', '.signin', App.register);
     return App.fakeProduct();
   },
 
@@ -89,7 +89,6 @@ App = {
         pStatus = web3.toAscii(result[2]);
 
 
-        var t = "";
 
 
         var tr = "<tr>";
@@ -97,9 +96,9 @@ App = {
         tr += "<td>" + pOwner + "</td>";
         tr += "<td>" + pStatus + "</td>";
         tr += "</tr>";
-        t += tr;
+        App.historyTable += tr;
 
-        document.getElementById('logdata').innerHTML = t;
+        document.getElementById('logdata').innerHTML = App.historyTable;
 
       }).catch(function (err) {
         console.log(err.message);
