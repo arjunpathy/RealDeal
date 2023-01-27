@@ -148,7 +148,7 @@ app.post('/product', (req, res) => {
     });
 });
 
-app.post('/products',(req,res)=>{
+app.post('/products',async (req,res)=>{
   console.log(req.body)
 
   let data = JSON.stringify({
@@ -161,7 +161,8 @@ app.post('/products',(req,res)=>{
     config.data = data;
 
   console.log(config)
-  axios(config).then(function (response) {
+  await axios(config).then( (response) => {
+    console.log("here : ",response.data)
     console.log(JSON.stringify(response.data));
     res.send(response.data)
   }).catch(function (error) {

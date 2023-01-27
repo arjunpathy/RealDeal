@@ -1,62 +1,29 @@
 {
 	"compiler": {
-		"version": "0.8.6+commit.11564f7e"
+		"version": "0.8.17+commit.8df45f5f"
 	},
 	"language": "Solidity",
 	"output": {
 		"abi": [
 			{
-				"inputs": [
-					{
-						"internalType": "address",
-						"name": "_address",
-						"type": "address"
-					}
-				],
-				"name": "checkIsUserLogged",
-				"outputs": [
-					{
-						"internalType": "bool",
-						"name": "",
-						"type": "bool"
-					}
-				],
-				"stateMutability": "view",
-				"type": "function"
+				"inputs": [],
+				"stateMutability": "nonpayable",
+				"type": "constructor"
 			},
 			{
 				"inputs": [
 					{
 						"internalType": "address",
-						"name": "_address",
+						"name": "user",
 						"type": "address"
 					},
 					{
-						"internalType": "string",
-						"name": "_password",
-						"type": "string"
+						"internalType": "enum product.Role",
+						"name": "role",
+						"type": "uint8"
 					}
 				],
-				"name": "login",
-				"outputs": [
-					{
-						"internalType": "bool",
-						"name": "",
-						"type": "bool"
-					}
-				],
-				"stateMutability": "nonpayable",
-				"type": "function"
-			},
-			{
-				"inputs": [
-					{
-						"internalType": "address",
-						"name": "_address",
-						"type": "address"
-					}
-				],
-				"name": "logout",
+				"name": "assignRole",
 				"outputs": [],
 				"stateMutability": "nonpayable",
 				"type": "function"
@@ -64,9 +31,9 @@
 			{
 				"inputs": [
 					{
-						"internalType": "address",
-						"name": "_address",
-						"type": "address"
+						"internalType": "bytes32",
+						"name": "_id",
+						"type": "bytes32"
 					},
 					{
 						"internalType": "bytes32",
@@ -75,55 +42,167 @@
 					},
 					{
 						"internalType": "bytes32",
-						"name": "_password",
+						"name": "_desc",
 						"type": "bytes32"
 					},
 					{
-						"internalType": "bytes32",
-						"name": "_id",
-						"type": "bytes32"
-					},
-					{
-						"internalType": "bytes32",
-						"name": "_role",
-						"type": "bytes32"
+						"internalType": "address",
+						"name": "_owner",
+						"type": "address"
 					}
 				],
-				"name": "register",
+				"name": "createProduct",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "getAllProducts",
 				"outputs": [
 					{
-						"internalType": "bool",
+						"internalType": "bytes32[]",
 						"name": "",
-						"type": "bool"
+						"type": "bytes32[]"
+					},
+					{
+						"internalType": "bytes32[]",
+						"name": "",
+						"type": "bytes32[]"
+					},
+					{
+						"internalType": "bytes32[]",
+						"name": "",
+						"type": "bytes32[]"
+					},
+					{
+						"internalType": "address[]",
+						"name": "",
+						"type": "address[]"
 					}
 				],
-				"stateMutability": "nonpayable",
+				"stateMutability": "view",
 				"type": "function"
 			},
 			{
 				"inputs": [
 					{
 						"internalType": "bytes32",
-						"name": "productId",
-						"type": "bytes32"
-					},
-					{
-						"internalType": "bytes32",
-						"name": "pOwner",
-						"type": "bytes32"
-					},
-					{
-						"internalType": "bytes32",
-						"name": "pName",
-						"type": "bytes32"
-					},
-					{
-						"internalType": "bytes32",
-						"name": "pDesc",
+						"name": "_id",
 						"type": "bytes32"
 					}
 				],
-				"name": "registerProduct",
+				"name": "getProduct",
+				"outputs": [
+					{
+						"internalType": "bytes32",
+						"name": "",
+						"type": "bytes32"
+					},
+					{
+						"internalType": "bytes32",
+						"name": "",
+						"type": "bytes32"
+					},
+					{
+						"internalType": "bytes32",
+						"name": "",
+						"type": "bytes32"
+					},
+					{
+						"internalType": "address",
+						"name": "",
+						"type": "address"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "bytes32",
+						"name": "",
+						"type": "bytes32"
+					}
+				],
+				"name": "products",
+				"outputs": [
+					{
+						"internalType": "bytes32",
+						"name": "id",
+						"type": "bytes32"
+					},
+					{
+						"internalType": "bytes32",
+						"name": "name",
+						"type": "bytes32"
+					},
+					{
+						"internalType": "bytes32",
+						"name": "desc",
+						"type": "bytes32"
+					},
+					{
+						"internalType": "address",
+						"name": "owner",
+						"type": "address"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "productsCount",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "",
+						"type": "address"
+					}
+				],
+				"name": "roles",
+				"outputs": [
+					{
+						"internalType": "uint8",
+						"name": "",
+						"type": "uint8"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "bytes32",
+						"name": "_id",
+						"type": "bytes32"
+					},
+					{
+						"internalType": "address",
+						"name": "currentOwner",
+						"type": "address"
+					},
+					{
+						"internalType": "address",
+						"name": "newOwner",
+						"type": "address"
+					}
+				],
+				"name": "transferOwnership",
 				"outputs": [],
 				"stateMutability": "nonpayable",
 				"type": "function"
@@ -132,107 +211,21 @@
 				"inputs": [
 					{
 						"internalType": "bytes32",
-						"name": "sProductId",
+						"name": "_id",
 						"type": "bytes32"
 					},
 					{
-						"internalType": "bytes32",
-						"name": "ownerId",
-						"type": "bytes32"
-					},
-					{
-						"internalType": "bytes32",
-						"name": "buyerId",
-						"type": "bytes32"
-					}
-				],
-				"name": "sellProduct",
-				"outputs": [
-					{
-						"internalType": "bytes32",
-						"name": "",
-						"type": "bytes32"
-					}
-				],
-				"stateMutability": "nonpayable",
-				"type": "function"
-			},
-			{
-				"inputs": [
-					{
-						"internalType": "bytes32",
-						"name": "",
-						"type": "bytes32"
-					}
-				],
-				"name": "vProducts",
-				"outputs": [
-					{
-						"internalType": "bool",
-						"name": "",
-						"type": "bool"
-					}
-				],
-				"stateMutability": "view",
-				"type": "function"
-			},
-			{
-				"inputs": [
-					{
-						"internalType": "bytes32",
-						"name": "vProductId",
-						"type": "bytes32"
-					},
-					{
-						"internalType": "bytes32",
-						"name": "ownerId",
-						"type": "bytes32"
+						"internalType": "address",
+						"name": "_ownerId",
+						"type": "address"
 					}
 				],
 				"name": "verifyFakeness",
 				"outputs": [
 					{
-						"internalType": "bytes32",
+						"internalType": "bool",
 						"name": "",
-						"type": "bytes32"
-					},
-					{
-						"internalType": "bytes32",
-						"name": "",
-						"type": "bytes32"
-					},
-					{
-						"internalType": "bytes32",
-						"name": "",
-						"type": "bytes32"
-					}
-				],
-				"stateMutability": "view",
-				"type": "function"
-			},
-			{
-				"inputs": [],
-				"name": "viewProducts",
-				"outputs": [
-					{
-						"internalType": "bytes32[]",
-						"name": "",
-						"type": "bytes32[]"
-					},
-					{
-						"internalType": "bytes32[]",
-						"name": "",
-						"type": "bytes32[]"
-					},
-					{
-						"internalType": "bytes32[]",
-						"name": "",
-						"type": "bytes32[]"
-					},
-					{
-						"internalType": "bytes32[]",
-						"name": "",
-						"type": "bytes32[]"
+						"type": "bool"
 					}
 				],
 				"stateMutability": "view",
@@ -252,9 +245,9 @@
 	},
 	"settings": {
 		"compilationTarget": {
-			"contracts\\product.sol": "product"
+			"contracts\\Product.sol": "product"
 		},
-		"evmVersion": "berlin",
+		"evmVersion": "london",
 		"libraries": {},
 		"metadata": {
 			"bytecodeHash": "ipfs"
@@ -266,11 +259,11 @@
 		"remappings": []
 	},
 	"sources": {
-		"contracts\\product.sol": {
-			"keccak256": "0x1056f459cf4b25bd67c6f0a6b8353678b2eb4d333b946a7666711bebd6ce16c2",
+		"contracts\\Product.sol": {
+			"keccak256": "0x9cd479d6f0bb86965e848fe7dd5bbdcd221c830131abb9c43f47a43cd8b80642",
 			"urls": [
-				"bzz-raw://dfdd1b9d86f3643f4469ff3a05c09719f799e6f1d189c3a240299214bd7dd2be",
-				"dweb:/ipfs/QmTpHQehb6vkU5zRkaPcfpE3Fywe3EeU5wSCku2nZtSpQ6"
+				"bzz-raw://ad4acb80db6c3bf27b6ccf0264af9e139a57d988128b6dd687ed958339d3e1c5",
+				"dweb:/ipfs/QmUAQ52gqvCtb3CEmCkr4L4MYH1joUaU3ZeY2AQ7Ws53Db"
 			]
 		}
 	},

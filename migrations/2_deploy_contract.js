@@ -1,4 +1,4 @@
-var product=artifacts.require('product');
+var product=artifacts.require('Product');
 
 module.exports=function(deployer) {
     deployer.deploy(product); 
