@@ -544,7 +544,6 @@ progress {
   transition: transform 1s;
   border-width: 0;
   border: 0.1px solid  white !important;
-  overflow: scroll;
 }
 
 .card.is-flipped {
@@ -570,6 +569,7 @@ progress {
   color: #000;
   transform: rotateY(180deg);
 }
+
 
 
 
@@ -689,6 +689,9 @@ progress {
 .submit:active {
   background-color: #06b;
 }
+
+
+
 
 
 
@@ -5658,6 +5661,7 @@ input[type="button"].btn-block {
   background-clip: border-box;
   border: 1px solid rgba(0, 0, 0, 0.125);
   border-radius: 0.25rem;
+  overflow: scroll;
 }
 
 .card>hr {

@@ -1,4 +1,3 @@
-let accId ='';
 App = {
 
   web3Provider: null,
@@ -33,12 +32,21 @@ App = {
 
   initContract: function () {
 
-    $.getJSON('../build/contracts/product.json', function (data) {
+    $.getJSON('../build/contracts/Product.json',function(data){
 
       var productArtifact = data;
       App.contracts.product = TruffleContract(productArtifact);
       App.contracts.product.setProvider(App.web3Provider);
     });
+
+    web3.eth.getBlock(108, function (error, result) {
+      if (!error)
+        console.log((result));
+      else
+        console.error(error);
+    })
+
+
 
     return App.bindEvents();
   },
@@ -63,14 +71,12 @@ App = {
         console.log(error);
       }
 
-      var account=accounts[0];
-      // let account = "0x8CC56523c7889aCAF70Ee1643AD5032a20323A1a"
-
+      var account = accounts[0];
       console.log(account);
 
       App.contracts.product.deployed().then(function (instance) {
         productInstance = instance;
-        return productInstance.transferOwnership(web3.fromAscii(productId), (pOwner), (pBuyer), { from: account });
+        return productInstance.sellProduct(web3.fromAscii(productId), web3.fromAscii(pOwner), web3.fromAscii(pBuyer), { from: account });
       }).then(async (result) => {
 
         var txnData = JSON.stringify({
@@ -127,8 +133,6 @@ let updateProduct =  (data) => {
 $(function () {
 
   $(window).load(function () {
-    accId = (document.cookie).split('=')[1];
-    $('#pOwner').val(accId);
     App.init();
   })
 })
