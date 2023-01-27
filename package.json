@@ -1,0 +1,31 @@
+{
+  "name": "RealDeal",
+  "version": "1.0.0",
+  "description": "project on blockchain",
+  "main": "index.js",
+  "scripts": {
+    "dev": "lite-server",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": ""
+  },
+  "keywords": [
+    "blockchain",
+    "makeskilled"
+  ],
+  "author": "Arjun",
+  "license": "ISC",
+  "bugs": {
+    "url": ""
+  },
+  "homepage": "",
+  "devDependencies": {
+    "html5-qrcode": "^2.2.0",
+    "lite-server": "^2.6.1"
+  },
+  "dependencies": {
+    "web3": "^1.8.1"
+  }
+}

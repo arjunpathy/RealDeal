@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>RealDeal</title>
+	<link rel="stylesheet" type="text/css" href="slide navbar style.css">
+<link href="https://fonts.googleapis.com/css2?family=Jost:wght@500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+
+</head>
+<body class="loginbody">
+	<div class="main">  	
+		<input type="checkbox" id="chk" aria-hidden="true">
+
+			<div class="signup">
+				<form>
+					<label class="loginlabel" for="chk" aria-hidden="true">Sign up</label>
+					<input class="logininput" id = "signup_uname" type="text" name="txt" placeholder="User Name" required="">
+					<input class="logininput" id = "signup_uid" type="text" minlength="6" name="txt" placeholder="User Id" required="">
+					<input class="logininput" id = "signup_pwd" type="password" minlength="6" name="pswd" placeholder="Password" required="">
+					<input class="logininput" id = "signup_addr" type="text" name="addr" placeholder="Address" required="">
+                    <select class="logininput" name="role" id="signup_role">
+						<option value="manufacturer">Manufacturer</option>
+                        <option value="seller">Seller</option>
+                        <option value="consumer">Consumer</option>
+                    </select>
+					<input type="submit" class="loginbutton" id="signup" onclick="registerUser();"></input>
+				</form>
+			</div>
+
+			<div class="login">
+				<form>
+					<label class="loginlabel" id="loginlabel" for="chk" aria-hidden="true">Login</label>
+					<input class="logininput" id = "login_uid" type="txt" minlength="6" name="txt" placeholder="User Id" required="">
+					<input class="logininput" id = "login_pwd" minlength="6" type="password" name="pswd" placeholder="Password" required="">
+					<button class="loginbutton" id="loginbtn" onclick="loginUser();">Login</button>
+				</form>
+			</div>
+	</div>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+	<script src="js/web3.min.js"></script>
+	<script src="js/truffle-contract.js"></script>
+    <script src="js/login.js"></script>
+</body>
+</html>
