@@ -43,7 +43,7 @@ contract product {
     bytes32[] memory descriptions = new bytes32[](productsCount);
     address[] memory ownerIds = new address[](productsCount);
 
-
+       
         for(uint i = 0; i < productsCount; i++) {
             ProductStruct storage prod = products[productIds[i]];
             names[i] = prod.name;
@@ -52,7 +52,7 @@ contract product {
         }
         return (productIds,names,descriptions,ownerIds);
     }
-
+ 
 
     function getProduct(bytes32 _id) public view returns (bytes32, bytes32, bytes32, address) {
         ProductStruct storage Prod = products[_id];
@@ -76,7 +76,7 @@ contract product {
         products[_id].owner = newOwner;
     }
 
-
+   
     function assignRole(address user, Role role) public {
         require(roles[msg.sender] == uint8(Role.ADMIN), "Only admin can assign roles.");
         roles[user] = uint8(role);
