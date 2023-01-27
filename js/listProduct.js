@@ -69,7 +69,7 @@ App = {
 
             }).then(async (result) => {
 
-                
+
                 console.log("RESULT : ",result)
 
                 let data = formatData(result)
@@ -102,36 +102,36 @@ App = {
 
     sellProduct: function (event) {
         event.preventDefault();
-    
+
         var productInstance;
-    
+
         let productId = document.getElementById('productId').value;
         let pOwner = document.getElementById('pOwner').value;
         let pBuyer = document.getElementById('pBuyer').value;
-    
+
         web3.eth.getAccounts(async (error, accounts) => {
-    
+
           if (error) {
             console.log(error);
           }
-    
+
           var account=accounts[0];
           // let account = "0x8CC56523c7889aCAF70Ee1643AD5032a20323A1a"
-    
+
           console.log(account);
-    
+
           App.contracts.product.deployed().then(function (instance) {
             productInstance = instance;
             return productInstance.transferOwnership(web3.fromAscii(productId), (pOwner), (pBuyer), { from: account });
           }).then(async (result) => {
-    
+
             var txnData = JSON.stringify({
               txnId: result.tx,
               productId: productId,
               ownerId: pBuyer,
               ownerAddress: result.receipt.from,
             });
-    
+
             await saveTransaction(txnData).then(async () => {
               console.log(result);
               await updateProduct({productId, ownerId:pBuyer}).then( ()=>{
