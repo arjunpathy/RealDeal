@@ -47,7 +47,7 @@ App = {
 
   bindEvents: () => {
 
-    $(document).on('click','.btn-register', App.registerProduct),
+    $(document).on('click','#register', App.registerProduct),
       $(document).on('click', '.pidGenerate', App.generateProductID);
   },
 

@@ -1,6 +1,5 @@
 const Web3 = require('web3');
-let accId ='';
-
+let accId = '';
 App = {
     web3Provider: null,
     contracts: {},
@@ -58,7 +57,7 @@ App = {
                 console.log(error);
             }
 
-            var account=accounts[0];
+            var account = accounts[0];
 
             console.log(account);
 
@@ -70,9 +69,10 @@ App = {
             }).then(async (result) => {
 
 
-                console.log("RESULT : ",result)
+                console.log("RESULT : ", result)
 
-                let data = formatData(result)
+                let data = formatData(result);
+                App.formatedData = data;
 
                 console.log(data.productIds)
                 let ids = data.productIds.map(ele => { return ele.replace(/\0.*$/g, ''); });
@@ -83,13 +83,14 @@ App = {
                     var t = "";
                     for (var i = 0; i < data.productIds.length; i++) {
                         var tr = "<tr>";
-                        tr += "<td>" + data.productIds[i] + "</td>";
+                        tr += "<td style='width: 125px;'>" + data.productIds[i] + "</td>";
                         tr += "<td>" + data.pNames[i] + "</td>";
                         tr += "<td>" + data.pDesc[i] + "</td>";
-                        tr += "<td>" + data.ownerIds[i] + "</td>";
-                        tr += "<td> <img src =" + QrData[i] + " data-toggle='modal' data-target='#exampleModalCenter' onclick=getTransactions(" + data.productIds[i] + ") class ='qr-img' /></td>";
+                        tr += "<td class='ownerid-td'>" + data.ownerIds[i] + "</td>";
+                        tr += "<td style='width: 75px;'> <img src =" + QrData[i] + " class ='qr-img' /></td>";
+                        tr += "<td ><img style='cursor:pointer;margin-left:10px;' onclick=setSellInfo(" + i + ") src='./images/coin2.png'title='Sell'/><img style='cursor:pointer;margin-left:10px;'onclick=getTransactions(" + data.productIds[i] + ") data-toggle='modal' data-target='#exampleModalCenter' src='./images/search.png'title='View'/></td>"
                         tr += "</tr>";
-                        t += tr;
+                        t += tr; //+ data.productIds[i] + ","+ oid +
                     }
                     document.getElementById('logdata').innerHTML += t;
                     document.getElementById('add').innerHTML = account;
@@ -111,37 +112,37 @@ App = {
 
         web3.eth.getAccounts(async (error, accounts) => {
 
-          if (error) {
-            console.log(error);
-          }
+            if (error) {
+                console.log(error);
+            }
 
-          var account=accounts[0];
-          // let account = "0x8CC56523c7889aCAF70Ee1643AD5032a20323A1a"
+            var account = accounts[0];
+            // let account = "0x8CC56523c7889aCAF70Ee1643AD5032a20323A1a"
 
-          console.log(account);
+            console.log(account);
 
-          App.contracts.product.deployed().then(function (instance) {
-            productInstance = instance;
-            return productInstance.transferOwnership(web3.fromAscii(productId), (pOwner), (pBuyer), { from: account });
-          }).then(async (result) => {
+            App.contracts.product.deployed().then(function (instance) {
+                productInstance = instance;
+                return productInstance.transferOwnership(web3.fromAscii(productId), (pOwner), (pBuyer), { from: account });
+            }).then(async (result) => {
 
-            var txnData = JSON.stringify({
-              txnId: result.tx,
-              productId: productId,
-              ownerId: pBuyer,
-              ownerAddress: result.receipt.from,
+                var txnData = JSON.stringify({
+                    txnId: result.tx,
+                    productId: productId,
+                    ownerId: pBuyer,
+                    ownerAddress: result.receipt.from,
+                });
+
+                await saveTransaction(txnData).then(async () => {
+                    console.log(result);
+                    await updateProduct({ productId, ownerId: pBuyer }).then(() => {
+                        // window.location.reload();
+                        document.getElementById('productId').innerHTML = '';
+                    }).catch((err) => console.log(err.message))
+                }).catch((err) => console.log(err.message))
+            }).catch(function (err) {
+                console.log(err.message);
             });
-
-            await saveTransaction(txnData).then(async () => {
-              console.log(result);
-              await updateProduct({productId, ownerId:pBuyer}).then( ()=>{
-                // window.location.reload();
-                document.getElementById('productId').innerHTML = '';
-              }).catch((err) => console.log(err.message))
-            }).catch((err) => console.log(err.message))
-          }).catch(function (err) {
-            console.log(err.message);
-          });
         });
     }
 };
@@ -149,9 +150,9 @@ App = {
 let formatData = (result) => {
     console.log(result)
     let data = {};
-    let params = ['productIds', 'pNames','pDesc']; //ownerIds' , 'qr'
+    let params = ['productIds', 'pNames', 'pDesc']; //ownerIds' , 'qr'
     for (let i = 0; i < params.length; i++) {
-            data[params[i]] = result[i].map(ele => { return web3.toAscii(ele).replace(/\0.*$/g, '') });
+        data[params[i]] = result[i].map(ele => { return web3.toAscii(ele).replace(/\0.*$/g, '') });
     }
     data['ownerIds'] = result[3] // ownerIds are the 4th parmeter in result
     console.log(data)
@@ -210,11 +211,19 @@ let getTransactions = (id) => {
                 prevOwner = (i == 0) ? currOwner : result.documents[i - 1].ownerId;
 
 
-                var tr = "<tr onclick= getDetailedTransaction(" + i + ") ><td>" + prevOwner + "</td>";
-                tr += "<td>" + currOwner + "</td>";
-                tr += "<td style='font-size: 10px;' > <i> " + result.documents[i].txnId + " </i> </td>";
-                tr += "</tr>";
-                t += tr;
+                // var tr = "<tr onclick= getDetailedTransaction(" + i + ") ><td>" + prevOwner + "</td>";
+                // tr += "<td>" + currOwner + "</td>";
+                // tr += "<td style='font-size: 10px;' > <i> " + result.documents[i].txnId + " </i> </td>";
+                // tr += "</tr>";
+                // t += tr;
+
+                let div = "<div class='txnRow'> ";
+                div += "<div style='width: 100%;display: inline-flex;'><img class='small-icon' src='./images/transaction.png' />";
+                div += "<div style='font-size:12px;margin-left: 2%;margin-top: 1%;'>"+ result.documents[i].txnId+"</div>";
+                div += "<button class='btn seemore btn-warning' onclick='getDetailedTransaction("+i+")'><i id='arrow"+i+"' class='arrow down'></i></button></div><div class='hide' id='TxnDetail"+i+"'></div></div>";
+              
+
+                t+= div;
 
             }
             document.getElementById('transactionTable').innerHTML += t;
@@ -224,32 +233,81 @@ let getTransactions = (id) => {
 let getDetailedTransaction = (index) => {
     let Tid = App.docs[index].txnId;
     console.log(Tid)
+    $(`#arrow${index}`).toggleClass("up");
     web3.eth.getTransaction(Tid, function (error, result) {
         if (!error) {
+            $(`#TxnDetail${index}`).empty();
+            $(`#TxnDetail${index}`).toggleClass("show");
+            let t = "";
             console.log(result);
-            $("#txnFrom").text(result.from);
-            $("#txnTo").text(result.to);
-            $("#gas").text(result.gas);
-            $("#txnHash").text(result.hash);
-            $("#blockHash").text(result.blockHash);
-            $("#blockNumber").text(result.blockNumber);
+            let div = "";
+              div += "<div style='width: 100%;display: inline-flex;'><div style='font-size: 12px;'>"+result.from+"</div><img class='medium-icon' src='./images/arrow-right.png' /><div style='font-size: 12px;'>"+result.to+"</div></div>";
+                div += "<div style='width: 100%;display: inline-flex;'><img  class='small-icon'  src='./images/fork.png'/><div style='font-size: 10px;'>"+result.blockHash+"</div>";
+                div += "<img  class='small-icon'  src='./images/cube.png'/><div>"+result.blockNumber+"</div><img  class='small-icon'  src='./images/gas-pump.png'/><div>"+result.gas+" wei</div></div>";
+                t+= div;
+                document.getElementById(`TxnDetail${index}`).innerHTML += t;
+
+
+            // $("#txnFrom").text(result.from);
+            // $("#txnTo").text(result.to);
+            // $("#gas").text(result.gas);
+            // $("#txnHash").text(result.hash);
+            // $("#blockHash").text(result.blockHash);
+            // $("#blockNumber").text(result.blockNumber);
         } else
             console.error(error);
     })
 }
 
+let setSellInfo = (index) => {
+    $("#productId").val(App.formatedData.productIds[index]);
+    $("#pOwner").val(App.formatedData.ownerIds[index]);
+}
+
+let saveTransaction = (txnData) => {
+    const baseurl = "http://localhost:8080";
+    var myHeaders = new Headers();
+    myHeaders.append("Content-Type", "application/json");
+    myHeaders.append("Access-Control-Request-Headers", "*");
+    myHeaders.append("Access-Control-Allow-Origin", "*");
+    var requestOptions = {
+        method: 'POST',
+        headers: myHeaders,
+        body: txnData,
+        redirect: 'follow'
+    };
+    return fetch(`${baseurl}/transaction`, requestOptions)
+}
+
+let updateProduct = (data) => {
+    const baseurl = "http://localhost:8080";
+    var myHeaders = new Headers();
+    myHeaders.append("Content-Type", "application/json");
+    myHeaders.append("Access-Control-Request-Headers", "*");
+    myHeaders.append("Access-Control-Allow-Origin", "*");
+    var requestOptions = {
+        method: 'PUT',
+        headers: myHeaders,
+        body: JSON.stringify(data),
+        redirect: 'follow'
+    };
+    console.log(requestOptions)
+    return fetch(`${baseurl}/product`, requestOptions)
+}
+
+
 var cards = document.querySelectorAll('.card');
-[...cards].forEach((card)=>{
-  card.addEventListener( 'click', function() {
-    card.classList.toggle('is-flipped');  
-  });
+[...cards].forEach((card) => {
+    card.addEventListener('click', function () {
+        card.classList.toggle('is-flipped');
+    });
 });
 
 
 $(function () {
     $(window).load(function () {
         accId = (document.cookie).split('=')[1];
-    $('#pOwner').val(accId);
+        $('#pOwner').val(accId);
         App.init();
     })
 })

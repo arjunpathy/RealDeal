@@ -359,14 +359,14 @@ progress {
 /* ************************************************************************************************ */
 .small-icon{
   height: 30px;
-  width: 30px;
-  margin-top: 1px;
-  margin-left: 30px;
+    width: 30px;
+    margin-left: 15px;
+    margin-right: 5px;
 }
 .medium-icon{
   height: 40px;
   width: 40px;
-  margin: 10px 50px;
+  margin: -10px 10px;
 }
 
 .wallet-address{
@@ -413,6 +413,7 @@ progress {
 .scan-table {
   width: 60%;
   margin-left: 2%;
+  overflow: hidden;
 }
 
 .pidGenerate {
@@ -582,7 +583,43 @@ progress {
   padding: 20px;
   width: 320px;
 }
-
+.form2 {
+  background-color: #15172b;
+  border-radius: 20px;
+  box-sizing: border-box;
+  padding: 20px;
+  width: 60%;
+    margin: 5px;
+}
+.form3 {
+  background-color: #15172b;
+  border-radius: 20px;
+  box-sizing: border-box;
+  padding: 20px;
+  /* width: 60%; */
+    margin: 10px;
+}
+.transaction-tr{
+  padding: 10px;
+    border: 1px solid black;
+    border-radius: 15px;
+    display: inline-flex;
+    width: 100%;
+    /* padding-left: 10px; */
+}
+.transaction-tbody{
+  padding: 10px;
+    border: 1px solid black;
+    border-radius: 15px;
+    display: inline-flex;
+    width: 100%;
+    color: white;
+    cursor: pointer;
+}
+.transaction-tr div, .transaction-tbody div{
+  margin-right: 5px;
+  width: 200px;
+}
 .title {
   color: #eee;
   font-family: sans-serif;
@@ -604,7 +641,10 @@ progress {
   position: relative;
   width: 100%;
 }
-
+.desc-box{
+  height: 80px;
+    position: relative;
+}
 .ic1 {
   margin-top: 40px;
 }
@@ -639,7 +679,7 @@ progress {
 }
 
 .cut-short {
-  /* width: 50px; */
+  width: 120px;
 }
 
 .input:focus ~ .cut,
@@ -690,10 +730,53 @@ progress {
   background-color: #06b;
 }
 
+.ownerid-td{
+  font-size: 12px;
+  font-style: italic;
+  width: 20%;
+}
 
+.arrow {
+  border: solid black;
+  border-width: 0 3px 3px 0;
+  display: inline-block;
+  padding: 3px;
+}
 
+.up {
+  transform: rotate(-135deg) !important;
+  -webkit-transform: rotate(-135deg);
+}
 
+.down {
+  transform: rotate(45deg);
+  -webkit-transform: rotate(45deg);
+}
 
+.hide{
+  display: none !important;
+}
+
+.show{
+  display: block !important;
+}
+
+.seemore{
+  padding: 0px !important;
+    margin-left: 12%;
+    height: 25px;
+    margin-right: 18px;
+    width: 40px;
+    margin-top: 5px;
+}
+.txnRow{
+  margin-bottom: 4px;
+    line-height: 20px;
+    border-radius: 20px;
+    padding: 2px;
+    border: 1px solid black;
+    background: #11121f;
+}
 
 /* ************************************************************************************************ */
 /* ************************************************************************************************ */
@@ -961,6 +1044,10 @@ pre code {
   padding-left: 15px;
   margin-right: auto;
   margin-left: auto;
+}
+.nav-br{
+  background-color:#15172b;
+  border-radius: 20px;
 }
 
 .row {
@@ -5119,7 +5206,7 @@ input[type="button"].btn-block {
 
 .nav-tabs .nav-link.active,
 .nav-tabs .nav-item.show .nav-link {
-  color: #495057;
+  color: #08d;
   background-color: #fff;
   border-color: #dee2e6 #dee2e6 #fff;
 }
@@ -5136,7 +5223,7 @@ input[type="button"].btn-block {
 
 .nav-pills .nav-link.active,
 .nav-pills .show>.nav-link {
-  color: #fff;
+  color:  #08d;
   background-color: #007bff;
 }
 
@@ -5570,7 +5657,8 @@ input[type="button"].btn-block {
 .navbar-light .navbar-nav .active>.nav-link,
 .navbar-light .navbar-nav .nav-link.show,
 .navbar-light .navbar-nav .nav-link.active {
-  color: rgba(0, 0, 0, 0.9);
+  /* color: rgba(0, 0, 0, 0.9); */
+  color:  #08d;
 }
 
 .navbar-light .navbar-toggler {
@@ -7056,6 +7144,8 @@ a.close.disabled {
   border: 1px solid rgba(0, 0, 0, 0.2);
   border-radius: 0.3rem;
   outline: 0;
+  background: #15172B;
+    color: lavenderblush;
 }
 
 .modal-backdrop {
@@ -7109,6 +7199,7 @@ a.close.disabled {
   flex: 1 1 auto;
   padding: 10px 35px;
   height: 450px;
+  overflow: scroll;
 }
 
 .modal-footer {

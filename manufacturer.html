@@ -11,19 +11,20 @@
 
 </head>
 
-<body>
+<body style="  background: linear-gradient(to bottom, #0f0c29, #302b63, #24243e);">
 	<section class="ftco-section">
 		<div class="container-fluid px-md-5">
 			<div class="row justify-content-between">
 				<div class="col-md-8 order-md-last">
 					<div class="row">
 						<div class="col-md-6 text-center">
-							<a class="navbar-brand" href="index.html">Fake Product Identification <span>through Blockchain</span></a>
+							<a class="navbar-brand" style="color: #573b8a;" href="verify.html">Fake Product Identification <span style="color: white;">through
+									Blockchain</span></a>
 						</div>
 						<div class="col-md-6 d-md-flex justify-content-end mb-md-0 mb-3">
 							<form action="#" class="searchform order-lg-last">
-			          
-			        </form>
+
+							</form>
 						</div>
 					</div>
 				</div>
@@ -32,58 +33,64 @@
 			</div>
 		</div>
 		<nav class="navbar navbar-expand-lg navbar-dark ftco_navbar bg-dark ftco-navbar-light" id="ftco-navbar">
-	    <div class="container-fluid">
-	    
-	      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#ftco-nav" aria-controls="ftco-nav" aria-expanded="false" aria-label="Toggle navigation">
-	        <span class="fa fa-bars"></span> Menu
-	      </button>
-	      <div class="collapse navbar-collapse" id="ftco-nav">
-	        <ul class="navbar-nav m-auto">
-	        	<li class="nav-item"><a href="verify.html" class="nav-link">Home</a></li>
-			  	<li class="nav-item active"><a href="manufacturer.html" class="nav-link">Register</a></li>
-	        	<li class="nav-item"><a href="products.html" class="nav-link">Products</a></li>
-	          	<!-- <li class="nav-item"><a href="sellproduct.html" class="nav-link">Sell Product</a></li> -->
-	        </ul>
-	      </div>
-	    </div>
-	  </nav>
-    <!-- END nav -->
+			<div class="container-fluid">
+
+				<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#ftco-nav"
+					aria-controls="ftco-nav" aria-expanded="false" aria-label="Toggle navigation">
+					<span class="fa fa-bars"></span> Menu
+				</button>
+				<div class="collapse navbar-collapse" id="ftco-nav">
+					<ul class="navbar-nav m-auto">
+						<li class="nav-item"><a href="verify.html" class="nav-link">Home</a></li>
+						<li class="nav-item active"><a href="manufacturer.html" class="nav-link">Register</a></li>
+						<li class="nav-item"><a href="products.html" class="nav-link">Products</a></li>
+						<!-- <li class="nav-item"><a href="sellproduct.html" class="nav-link">Sell Product</a></li> -->
+					</ul>
+				</div>
+			</div>
+		</nav>
+		<!-- END nav -->
 
 	</section>
-	<section>
-		<div class="register-card">
-			<h2 style="color: beige;">Register Here</h2>
-			<div class="register-container">
-
-				<div class="register-text-box">
-					<label for="text">Owner Id</label>
-					<input type="text" class="form-control" id="pOwner" placeholder="Enter Owner ID" name="pOwner">
+	<div style="width: 100%; display: inline-flex;">
+		<div class="form2">
+			<div class="title">Register Here</div>
+			<div style="width: 100%; display: inline-flex;">
+				<div style="width: 300px;margin-left: 20px;" class="input-container ic1">
+					<input id="pOwner" class="input" type="text" placeholder=" " />
+					<div class="cut"></div>
+					<label for="pOwner" class="placeholder">Owner Id</label>
 				</div>
 
-				<div class="register-text-box">
-					<label for="name">Product Id</label> 
-					<img id="pidGenerate" class="pidGenerate" src="./images/generate.png" />
-					<input type="text" class="form-control" id="productId" placeholder="Enter Product ID"
-						name="productId">
+				<div style="width: 200px;margin-left: 20px;" class="input-container ic1">
+					<input id="productId" class="input" type="text" placeholder=" " />
+					<div class="cut"></div>
+					<label for="productId" class="placeholder">Product Id</label>					
+				</div>
+				<div style="padding-top: 50px;padding-left: 10px;">
+					<img id="pidGenerate" title="Generate Id" class="pidGenerate" src="./images/generate.png" />
 				</div>
 
-
-				<div class="register-text-box">
-					<label for="text">Name</label>
-					<input type="text" class="form-control" id="pName" placeholder="Enter Product Name" name="pName">
+				<div style="width: 250px;margin-left: 20px;" class="input-container ic1">
+					<input id="pName" class="input" type="text" placeholder=" " />
+					<div class="cut cut-short"></div>
+					<label for="pName" class="placeholder">Product Name</label>
 				</div>
 			</div>
 
-
-			<div class="">
-				<label for="text">Description</label>
-				<input type="text" class="form-control" id="pDesc" placeholder="Enter Product Description"
-					name="pDesc">
+			<div class="desc-box ic2">
+				<input id="pDesc" class="input" type="text" placeholder=" " />
+				<div class="cut cut-short"></div>
+				<label for="pDesc" class="placeholder">Product Description</label>
 			</div>
 
-			<button type="submit" class="btn btn-warning btn-register" id="register">Register</button>
+			<button type="submit" style="width: 20%;margin-left: 40%;" class="submit" id="register">Register</button>
+
 		</div>
-	</section>
+		<div class="form2">
+			<div class="title">Blocks</div>
+		</div>
+	</div>
 
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 	<script src="js/popper.js"></script>

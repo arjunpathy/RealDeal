@@ -39,7 +39,7 @@ let loginUser = (event) => {
         .then(result => {
             if (result === 'true'){
                 setCookie("id", id, 10);
-                window.location.replace("http://localhost:3000/verify.html");
+                window.location.replace("verify.html");
                 }
             else
                 alert("Invalid Credentials! Try Again.")
