@@ -14,19 +14,11 @@ contract product {
     bytes32[] productIds;
 
 
-    struct OwnershipHistory {
-        address previousOwner;
-        address newOwner;
-        uint timestamp;
-        // bytes32 transactionHash;
-        uint blockNumber;
-    }
 
     mapping(bytes32 => ProductStruct) public products;
-    // OwnershipHistory[] public ownershipHistory;
     mapping(address => uint8) public roles;
     event Log(bytes32 _id, bytes32 _name, bytes32 _desc, address _owner);
-    enum Role { ADMIN, SELLER, USER }
+    enum Role { ADMIN, SELLER, CONSUMER }
 
     constructor() {
         // Assign the admin role to the address that deploys the contract
@@ -74,8 +66,6 @@ contract product {
 
     function transferOwnership(bytes32 _id, address currentOwner, address newOwner) public {
         require(products[_id].owner == currentOwner && (roles[msg.sender] == uint8(Role.ADMIN) || roles[msg.sender] == uint8(Role.SELLER) ), "Invalid Owner details or Invalid Authorization.");
-        // OwnershipHistory memory ownershipChange = OwnershipHistory(products[_id].owner, newOwner, block.timestamp, block.number);
-        // ownershipHistory.push(ownershipChange);
         products[_id].owner = newOwner;
     }
 

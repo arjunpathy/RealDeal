@@ -212,13 +212,6 @@ let getTransactions = (id) => {
                 currOwner = result.documents[i].ownerId;
                 prevOwner = (i == 0) ? currOwner : result.documents[i - 1].ownerId;
 
-
-                // var tr = "<tr onclick= getDetailedTransaction(" + i + ") ><td>" + prevOwner + "</td>";
-                // tr += "<td>" + currOwner + "</td>";
-                // tr += "<td style='font-size: 10px;' > <i> " + result.documents[i].txnId + " </i> </td>";
-                // tr += "</tr>";
-                // t += tr;
-
                 let div = "<div class='txnRow'> ";
                 div += "<div style='width: 100%;display: inline-flex;'><img class='small-icon' src='./images/transaction.png' />";
                 div += "<div style='font-size:12px;margin-left: 2%;margin-top: 1%;'>"+ result.documents[i].txnId+"</div>";
@@ -248,14 +241,6 @@ let getDetailedTransaction = (index) => {
                 div += "<img  class='small-icon'  src='./images/cube.png'/><div>"+result.blockNumber+"</div><img  class='small-icon'  src='./images/gas-pump.png'/><div>"+result.gas+" wei</div></div>";
                 t+= div;
                 document.getElementById(`TxnDetail${index}`).innerHTML += t;
-
-
-            // $("#txnFrom").text(result.from);
-            // $("#txnTo").text(result.to);
-            // $("#gas").text(result.gas);
-            // $("#txnHash").text(result.hash);
-            // $("#blockHash").text(result.blockHash);
-            // $("#blockNumber").text(result.blockNumber);
         } else
             console.error(error);
     })
@@ -308,7 +293,8 @@ var cards = document.querySelectorAll('.card');
 
 $(function () {
     $(window).load(function () {
-        accId = (document.cookie).split('=')[1];
+        let ind =document.cookie.indexOf("account")+8;
+        accId = document.cookie.substring(ind,ind+42);
         $('#pOwner').val(accId);
         App.init();
     })

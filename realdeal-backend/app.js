@@ -34,6 +34,42 @@ app.post('/user', (req, res) => {
       console.log(error);
     });
 })
+app.get('/users',(req,res)=>{
+  let data = JSON.stringify({"database": "realdeal","dataSource": "Cluster0", "filter": {},collection: 'users', });
+  config.url = `${baseurl}/action/find`,
+  config.data = data;
+
+  console.log(config)
+  axios(config).then(function (response) {
+    response.data.documents.forEach(user => {
+      delete user.password;
+    });
+    res.send(response.data.documents)
+  }).catch(function (error) {
+      console.log(error);
+    });
+})
+
+app.put('/update/user',(req,res)=>{
+  console.log(req.body)
+  let data = JSON.stringify({
+    database: "realdeal",
+    dataSource: "Cluster0",
+    collection: "users",
+    "filter": { address: req.body.address },
+    "update": { "$set": { "role": req.body.role } }
+  });
+  config.url = `${baseurl}/action/updateOne`;
+  config.data = data;
+  console.log(config)
+
+  axios(config).then(function (response) {
+    console.log(JSON.stringify(response.data));
+    res.send(response.data)
+  }).catch(function (error) {
+    console.log(error);
+  });
+})
 
 app.get('/user/:id',(req,res)=>{
   let data = JSON.stringify({"database": "realdeal","dataSource": "Cluster0", "filter": { "id" : req.params['id']},collection: 'users', });
