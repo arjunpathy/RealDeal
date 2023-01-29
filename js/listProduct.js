@@ -142,6 +142,8 @@ App = {
                 }).catch((err) => console.log(err.message))
             }).catch(function (err) {
                 console.log(err.message);
+                let msg = err.message.substring(err.message.indexOf("reason")+9, err.message.indexOf(".\"},\""));
+                alert(msg);
             });
         });
     }

@@ -81,7 +81,7 @@ App = {
 
         console.log(result);
 
-        let status =  (result) ? "Authentic" : "Fake";
+        let status =  (result) ? "Authentic 👍" : "Fake 👎";
 
         var tr = "<tr>";
         tr += "<td>" + productId + "</td>";

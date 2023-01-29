@@ -56,8 +56,8 @@ App = {
 
     var productInstance;
 
-    var productId = document.getElementById('productId').value;
     var pOwner = document.getElementById('pOwner').value;
+    var productId = document.getElementById('productId').value;
     var pName = document.getElementById('pName').value;
     var pDesc = document.getElementById('pDesc').value;
     let qrData = "";
@@ -68,7 +68,8 @@ App = {
         console.log(error);
       }
 
-      var account = accounts[0];
+      // var account = accounts[0];
+      let account = pOwner;
 
       console.log(account);
       setCookie("account",account,1);
@@ -119,15 +120,12 @@ App = {
           })
           .catch(error => console.log('error', error));
 
-
-
-        document.getElementById('productId').innerHTML = '';
-        document.getElementById('pOwner').innerHTML = '';
-        document.getElementById('pName').innerHTML = '';
-        document.getElementById('pDesc').innerHTML = '';
+          clearValues(['productId','pOwner','pName','pDesc']);
 
       }).catch((err) => {
         console.log(err.message);
+        let msg = err.message.substring(err.message.indexOf("reason")+9, err.message.indexOf(".\"},\""));
+        alert(msg);
       });
     });
   },
@@ -137,6 +135,11 @@ App = {
 
 };
 
+let clearValues = (arr) =>{
+arr.forEach(element => {
+  document.getElementById(element).innerHTML = '';
+});
+}
 const generateQR = async text => {
   text = JSON.stringify(text)
   try {

@@ -25,6 +25,7 @@ contract product {
     mapping(bytes32 => ProductStruct) public products;
     // OwnershipHistory[] public ownershipHistory;
     mapping(address => uint8) public roles;
+    event Log(bytes32 _id, bytes32 _name, bytes32 _desc, address _owner);
     enum Role { ADMIN, SELLER, USER }
 
     constructor() {
@@ -33,7 +34,8 @@ contract product {
     }
 
     function createProduct(bytes32 _id, bytes32 _name, bytes32 _desc, address _owner) public {
-        require(roles[msg.sender] == uint8(Role.ADMIN), "Only admin can create a product.");
+        emit Log(_id,_name,_desc,_owner);
+        require(roles[_owner] == uint8(Role.ADMIN), "Only admin can create a product.");
         products[_id] = ProductStruct(_id, _name, _desc, _owner);
         productIds.push(_id);
         productsCount++;
