@@ -44,18 +44,18 @@ App = {
         return App.bindEvents();
     },
     bindEvents: function () {
-        $(document).on('click', '#sell-btn', App.sellProduct);
-        return App.getData();
-    },
-
-    getData: () => {
-        var productInstance;
-
-        web3.eth.getAccounts(function (error, accounts) {
-
+        web3.eth.getAccounts(async (error, accounts) => {
             if (error) {
                 console.log(error);
             }
+            App.accounts = accounts;
+        $(document).on('click', '#sell-btn', App.sellProduct);
+        return App.getData(accounts);
+        });
+    },
+
+    getData: async(accounts) => {
+        var productInstance;
 
             var account = accounts[0];
 
@@ -98,10 +98,9 @@ App = {
             }).catch(function (err) {
                 console.log(err.message);
             })
-        })
     },
 
-    sellProduct: function (event) {
+    sellProduct:  (event) =>{
         event.preventDefault();
 
         var productInstance;
@@ -110,15 +109,8 @@ App = {
         let pOwner = document.getElementById('pOwner').value;
         let pBuyer = document.getElementById('pBuyer').value;
 
-        web3.eth.getAccounts(async (error, accounts) => {
 
-            if (error) {
-                console.log(error);
-            }
-
-            var account = accounts[0];
-            // let account = "0x8CC56523c7889aCAF70Ee1643AD5032a20323A1a"
-
+            var account = App.accounts[0];
             console.log(account);
 
             App.contracts.product.deployed().then(function (instance) {
@@ -142,10 +134,9 @@ App = {
                 }).catch((err) => console.log(err.message))
             }).catch(function (err) {
                 console.log(err.message);
-                let msg = err.message.substring(err.message.indexOf("reason")+9, err.message.indexOf(".\"},\""));
+                let msg = err.message.substring(err.message.indexOf("reason") + 9, err.message.indexOf(".\"},\""));
                 alert(msg);
             });
-        });
     }
 };
 
@@ -214,11 +205,11 @@ let getTransactions = (id) => {
 
                 let div = "<div class='txnRow'> ";
                 div += "<div style='width: 100%;display: inline-flex;'><img class='small-icon' src='./images/transaction.png' />";
-                div += "<div style='font-size:12px;margin-left: 2%;margin-top: 1%;'>"+ result.documents[i].txnId+"</div>";
-                div += "<button class='btn seemore btn-warning' onclick='getDetailedTransaction("+i+")'><i id='arrow"+i+"' class='arrow down'></i></button></div><div class='hide' id='TxnDetail"+i+"'></div></div>";
-              
+                div += "<div style='font-size:12px;margin-left: 2%;margin-top: 1%;'>" + result.documents[i].txnId + "</div>";
+                div += "<button class='btn seemore btn-warning' onclick='getDetailedTransaction(" + i + ")'><i id='arrow" + i + "' class='arrow down'></i></button></div><div class='hide' id='TxnDetail" + i + "'></div></div>";
 
-                t+= div;
+
+                t += div;
 
             }
             document.getElementById('transactionTable').innerHTML += t;
@@ -236,11 +227,11 @@ let getDetailedTransaction = (index) => {
             let t = "";
             console.log(result);
             let div = "";
-              div += "<div style='width: 100%;display: inline-flex;'><div style='font-size: 12px;'>"+result.from+"</div><img class='medium-icon' src='./images/arrow-right.png' /><div style='font-size: 12px;'>"+result.to+"</div></div>";
-                div += "<div style='width: 100%;display: inline-flex;'><img  class='small-icon'  src='./images/fork.png'/><div style='font-size: 10px;'>"+result.blockHash+"</div>";
-                div += "<img  class='small-icon'  src='./images/cube.png'/><div>"+result.blockNumber+"</div><img  class='small-icon'  src='./images/gas-pump.png'/><div>"+result.gas+" wei</div></div>";
-                t+= div;
-                document.getElementById(`TxnDetail${index}`).innerHTML += t;
+            div += "<div style='width: 100%;display: inline-flex;'><div style='font-size: 11px;'>" + result.from + "</div><img class='medium-icon' src='./images/arrow-right.png' /><div style='font-size: 11px;'>" + result.to + "</div></div>";
+            div += "<div style='width: 100%;display: inline-flex;'><img  class='small-icon'  src='./images/fork.png'/><div style='font-size: 10px;'>" + result.blockHash + "</div>";
+            div += "<img  class='small-icon'  src='./images/cube.png'/><div>" + result.blockNumber + "</div><img  class='small-icon'  src='./images/gas-pump.png'/><div>" + result.gas + " wei</div></div>";
+            t += div;
+            document.getElementById(`TxnDetail${index}`).innerHTML += t;
         } else
             console.error(error);
     })
@@ -293,8 +284,8 @@ var cards = document.querySelectorAll('.card');
 
 $(function () {
     $(window).load(function () {
-        let ind =document.cookie.indexOf("account")+8;
-        accId = document.cookie.substring(ind,ind+42);
+        let ind = document.cookie.indexOf("account") + 8;
+        accId = document.cookie.substring(ind, ind + 42);
         $('#pOwner').val(accId);
         App.init();
     })

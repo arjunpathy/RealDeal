@@ -46,9 +46,15 @@ App = {
   },
 
   bindEvents: () => {
+    web3.eth.getAccounts(function (error, accounts) {
 
-    $(document).on('click','#register', App.registerProduct),
-      $(document).on('click', '.pidGenerate', App.generateProductID);
+      if (error) {
+        console.log(error);
+      }
+      App.accounts = accounts;
+      $(document).on('click', '#register', App.registerProduct),
+        $(document).on('click', '.pidGenerate', App.generateProductID);
+    });
   },
 
   registerProduct: (event) => {
@@ -62,71 +68,64 @@ App = {
     var pDesc = document.getElementById('pDesc').value;
     let qrData = "";
 
-    web3.eth.getAccounts(function (error, accounts) {
+    // var account = accounts[0];
+    let account = pOwner;
 
-      if (error) {
-        console.log(error);
-      }
+    console.log(account);
+    setCookie("account", account, 1);
 
-      // var account = accounts[0];
-      let account = pOwner;
+    App.contracts.product.deployed().then(async (instance) => {
+      productInstance = instance;
 
-      console.log(account);
-      setCookie("account",account,1);
+      qrData = await generateQR({ productId, pOwner, pName, pDesc });
+      console.log(qrData)
 
-      App.contracts.product.deployed().then(async (instance) => {
-        productInstance = instance;
+      return productInstance.createProduct(web3.fromAscii(productId), web3.fromAscii(pName), web3.fromAscii(pDesc), account, { from: account });
+    }).then((result) => {
+      console.log("result : ", result);
 
-        qrData = await generateQR({ productId, pOwner, pName, pDesc });
-        console.log(qrData)
+      var myHeaders = new Headers();
+      myHeaders.append("Content-Type", "application/json");
+      myHeaders.append("Access-Control-Request-Headers", "*");
+      myHeaders.append("Access-Control-Allow-Origin", "*");
 
-        return productInstance.createProduct(web3.fromAscii(productId), web3.fromAscii(pName), web3.fromAscii(pDesc) , account, { from: account });
-      }).then((result) => {
-        console.log("result : ", result);
-
-        var myHeaders = new Headers();
-        myHeaders.append("Content-Type", "application/json");
-        myHeaders.append("Access-Control-Request-Headers", "*");
-        myHeaders.append("Access-Control-Allow-Origin", "*");
-
-        var txnData = JSON.stringify({
-          txnId: result.tx,
-          productId: productId,
-          ownerId: pOwner,
-          ownerAddress: result.receipt.from,
-        });
-
-        var prodData = JSON.stringify({
-          productId: productId,
-          productName: pName,
-          productDesc: pDesc,
-          currentOwner: pOwner,
-          qr: qrData
-        });
-
-        var requestOptions = {
-          method: 'POST',
-          headers: myHeaders,
-          body: txnData,
-          redirect: 'follow'
-        };
-
-        // window.location.reload();
-        fetch(`${baseurl}/transaction`, requestOptions)
-          .then(response => response.text())
-          .then(result => {
-            requestOptions.body = prodData;
-            fetch(`${baseurl}/product`, requestOptions).then(res => console.log(res)).catch(error => console.log('error', error));
-          })
-          .catch(error => console.log('error', error));
-
-          clearValues(['productId','pOwner','pName','pDesc']);
-
-      }).catch((err) => {
-        console.log(err.message);
-        let msg = err.message.substring(err.message.indexOf("reason")+9, err.message.indexOf(".\"},\""));
-        alert(msg);
+      var txnData = JSON.stringify({
+        txnId: result.tx,
+        productId: productId,
+        ownerId: pOwner,
+        ownerAddress: result.receipt.from,
       });
+
+      var prodData = JSON.stringify({
+        productId: productId,
+        productName: pName,
+        productDesc: pDesc,
+        currentOwner: pOwner,
+        qr: qrData
+      });
+
+      var requestOptions = {
+        method: 'POST',
+        headers: myHeaders,
+        body: txnData,
+        redirect: 'follow'
+      };
+
+      // window.location.reload();
+      fetch(`${baseurl}/transaction`, requestOptions)
+        .then(response => response.text())
+        .then(result => {
+          requestOptions.body = prodData;
+          fetch(`${baseurl}/product`, requestOptions).then(res => console.log(res)).catch(error => console.log('error', error));
+        })
+        .catch(error => console.log('error', error));
+
+      clearValues(['productId', 'pOwner', 'pName', 'pDesc']);
+
+    }).catch((err) => {
+      console.log(err.message);
+      let msg = err.message.substring(err.message.indexOf("reason") + 9, err.message.indexOf(".\"},\""));
+      alert(msg);
     });
   },
   generateProductID: () => {
@@ -135,10 +134,10 @@ App = {
 
 };
 
-let clearValues = (arr) =>{
-arr.forEach(element => {
-  document.getElementById(element).innerHTML = '';
-});
+let clearValues = (arr) => {
+  arr.forEach(element => {
+    document.getElementById(element).innerHTML = '';
+  });
 }
 const generateQR = async text => {
   text = JSON.stringify(text)
@@ -149,14 +148,14 @@ const generateQR = async text => {
   }
 }
 
-function setCookie(name,value,days) {
+function setCookie(name, value, days) {
   var expires = "";
   if (days) {
-      var date = new Date();
-      date.setTime(date.getTime() + (days*24*60*60*1000));
-      expires = "; expires=" + date.toUTCString();
+    var date = new Date();
+    date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
+    expires = "; expires=" + date.toUTCString();
   }
-  document.cookie = name + "=" + (value || "")  + expires + "; path=/";
+  document.cookie = name + "=" + (value || "") + expires + "; path=/";
 }
 
 

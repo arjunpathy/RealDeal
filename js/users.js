@@ -45,8 +45,15 @@ App = {
         return App.bindEvents();
     },
     bindEvents: function () {
-        $(document).on('click', '#Assign-btn', App.assignRole);
-        return App.getData();
+        web3.eth.getAccounts(async (error, accounts) => {
+
+            if (error) {
+                console.log(error);
+            }
+            App.accounts = accounts;
+            $(document).on('click', '#Assign-btn', App.assignRole);
+            return App.getData();
+        });
     },
 
     getData: () => {
@@ -87,26 +94,18 @@ App = {
         let userAddress = document.getElementById('userAdd').value;
         let role = $('input[name="role"]:checked').val();
 
+        var account = App.accounts[0];
+        console.log(account);
 
-        web3.eth.getAccounts(async (error, accounts) => {
-
-            if (error) {
-                console.log(error);
-            }
-
-            var account = accounts[0];
-            console.log(account);
-
-            App.contracts.product.deployed().then(function (instance) {
-                productInstance = instance;
-                return productInstance.assignRole(userAddress, role, { from: account });
-            }).then(async (result) => {
-                console.log(result);
-                await updateUserRole(userAddress, role).then(() => {
-                }).catch((err) => console.log(err.message))
-                window.location.reload();
-            })
-        });
+        App.contracts.product.deployed().then(function (instance) {
+            productInstance = instance;
+            return productInstance.assignRole(userAddress, role, { from: account });
+        }).then(async (result) => {
+            console.log(result);
+            await updateUserRole(userAddress, role).then(() => {
+            }).catch((err) => console.log(err.message))
+            window.location.reload();
+        })
     }
 };
 

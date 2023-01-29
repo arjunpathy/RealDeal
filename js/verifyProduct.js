@@ -48,10 +48,15 @@ App = {
     return App.bindEvents();
   },
   bindEvents: () => {
-    return App.fakeProduct();
+    web3.eth.getAccounts((error, accounts) => {
+      if (error) {
+        console.log(error);
+      }
+    return App.fakeProduct(accounts);
+    });
   },
 
-  fakeProduct: () => {
+  fakeProduct: (accounts) => {
 
     var productInstance;
 
@@ -62,14 +67,9 @@ App = {
       let text = "<tr><td> N/A </td><td> N/A </td><td> Invalid QR </td></tr>"
       document.getElementById('logdata').innerHTML = text;
     }
-    web3.eth.getAccounts((error, accounts) => {
 
-      if (error) {
-        console.log(error);
-      }
-
+    
       var account=accounts[0];
-      // let account = "0x8CC56523c7889aCAF70Ee1643AD5032a20323A1a"
       console.log(account);
 
       App.contracts.product.deployed().then(function (instance) {
@@ -95,9 +95,11 @@ App = {
       }).catch(function (err) {
         console.log(err.message);
       });
-    });
-  }
-
-
-  
+  }  
 };
+
+$(function () {
+  $(window).load(function () {
+      App.init();
+  })
+})
