@@ -34,7 +34,7 @@ contract product {
     }
 
     function getAllProducts() public view returns ( bytes32[] memory,bytes32[] memory, bytes32[] memory, address[] memory) {
-            bytes32[] memory names = new bytes32[](productsCount);
+    bytes32[] memory names = new bytes32[](productsCount);
     bytes32[] memory descriptions = new bytes32[](productsCount);
     address[] memory ownerIds = new address[](productsCount);
 
