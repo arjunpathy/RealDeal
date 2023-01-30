@@ -1,5 +1,7 @@
 const Web3 = require('web3');
+const baseurl = "http://localhost:8080";
 let accId = '';
+let currentUser;
 App = {
     web3Provider: null,
     contracts: {},
@@ -88,7 +90,7 @@ App = {
                         tr += "<td>" + data.pDesc[i] + "</td>";
                         tr += "<td class='ownerid-td'>" + data.ownerIds[i] + "</td>";
                         tr += "<td style='width: 75px;'> <img src =" + QrData[i] + " class ='qr-img' /></td>";
-                        tr += "<td ><img style='cursor:pointer;margin-left:10px;' onclick=setSellInfo(" + i + ") src='./images/coin2.png'title='Sell'/><img style='cursor:pointer;margin-left:10px;'onclick=getTransactions(" + data.productIds[i] + ") data-toggle='modal' data-target='#exampleModalCenter' src='./images/search.png'title='View'/></td>"
+                        tr += "<td ><img style='cursor:pointer;margin-left:10px;' onclick=setSellInfo(" + i + ") src='./images/coin.png'title='Sell'/><img style='cursor:pointer;margin-left:10px;'onclick=getTransactions(" + data.productIds[i] + ") data-toggle='modal' data-target='#exampleModalCenter' src='./images/search.png'title='View'/></td>"
                         tr += "</tr>";
                         t += tr; //+ data.productIds[i] + ","+ oid +
                     }
@@ -174,7 +176,6 @@ let getProdQR = (ids) => {
 }
 
 let getTransactions = (id) => {
-    const baseurl = "http://localhost:8080";
     var myHeaders = new Headers();
     $("#exampleModalCenterTitle").text(`Product : ${id}`);
     myHeaders.append("Content-Type", "application/json");
@@ -191,7 +192,6 @@ let getTransactions = (id) => {
             console.log(result.documents)
 
             // let txn = await getDetailedTransaction(result.documents[0].txnId)
-            let pId, prevOwner, currOwner = '';
 
 
             var t = "";
@@ -199,9 +199,6 @@ let getTransactions = (id) => {
             App.docs = result.documents;
 
             for (var i = 0; i < result.documents.length; i++) {
-                pId = result.documents[i].productId;
-                currOwner = result.documents[i].ownerId;
-                prevOwner = (i == 0) ? currOwner : result.documents[i - 1].ownerId;
 
                 let div = "<div class='txnRow'> ";
                 div += "<div style='width: 100%;display: inline-flex;'><img class='small-icon' src='./images/transaction.png' />";
@@ -224,8 +221,9 @@ let getDetailedTransaction = (index) => {
         if (!error) {
             $(`#TxnDetail${index}`).empty();
             $(`#TxnDetail${index}`).toggleClass("show");
-            let t = "";
             console.log(result);
+
+            let t = "";
             let div = "";
             div += "<div style='width: 100%;display: inline-flex;'><div style='font-size: 11px;'>" + result.from + "</div><img class='medium-icon' src='./images/arrow-right.png' /><div style='font-size: 11px;'>" + result.to + "</div></div>";
             div += "<div style='width: 100%;display: inline-flex;'><img  class='small-icon'  src='./images/fork.png'/><div style='font-size: 10px;'>" + result.blockHash + "</div>";
@@ -280,13 +278,53 @@ var cards = document.querySelectorAll('.card');
         card.classList.toggle('is-flipped');
     });
 });
+let getUser = (id) => {
+    var myHeaders = new Headers();
+    myHeaders.append("Content-Type", "application/json");
+    myHeaders.append("Access-Control-Request-Headers", "*");
+    myHeaders.append("Access-Control-Allow-Origin", "*");
+    var requestOptions = {method: 'GET',headers: myHeaders,redirect: 'follow'};
+    return fetch(`${baseurl}/user/${id}`, requestOptions)
+}
+let logout = () => {
+    let confirmAction = confirm("Are you sure?");
+    if (confirmAction) {
+      document.cookie.split(";").forEach(function (c) { document.cookie = c.replace(/^ +/, "").replace(/=.*/, "=;expires=" + new Date().toUTCString() + ";path=/"); });
+      window.location.replace("index.html");
+    } else {location.reload();}
+  }
+function getCookie(name) {
+    var nameEQ = name + "=";
+    var ca = document.cookie.split(';');
+    for(var i=0;i < ca.length;i++) {
+        var c = ca[i];
+        while (c.charAt(0)==' ') c = c.substring(1,c.length);
+        if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length,c.length);
+    }
+    return null;
+  }
+let id = getCookie('id');
+if (id) {
+  getUser(id).then(response => response.json())
+    .then((response) => {
+      console.log("USER : ", response)
+      currentUser = response[0];
+      $('#pOwner').val(currentUser.address);
+      $('#currentUserName').text(`Welcome ${currentUser.uname} !`);
+      $('#currentUserRole').text(currentUser.role);
+    }).catch(err => {
+      console.log(err);
+      window.location.replace("index.html");
+    });
+} else {
+  alert("Please Login!")
+  window.location.replace("index.html");
+}
 
+  
 
 $(function () {
     $(window).load(function () {
-        let ind = document.cookie.indexOf("account") + 8;
-        accId = document.cookie.substring(ind, ind + 42);
-        $('#pOwner').val(accId);
         App.init();
     })
 })

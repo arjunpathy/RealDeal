@@ -547,29 +547,8 @@ progress {
   border: 0.1px solid  white !important;
 }
 
-.card.is-flipped {
-  transform: translateX(-100%) rotateY(-180deg);
-}
 
-.card__face {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  color: white;
-  text-align: center;
-  font-size: 15px;
-  backface-visibility: hidden;
-}
 
-.card__face--front {
-  /* background: crimson; */
-}
-
-.card__face--back {
-  /* background: slateblue; */
-  color: #000;
-  transform: rotateY(180deg);
-}
 
 
 
@@ -721,7 +700,6 @@ progress {
   cursor: pointer;
   font-size: 18px;
   height: 50px;
-  margin-top: 38px;
   text-align: center;
   width: 100%;
 }
@@ -763,11 +741,10 @@ progress {
 
 .seemore{
   padding: 0px !important;
-    margin-left: 12%;
+    margin-left: 70px;
     height: 25px;
-    margin-right: 18px;
-    width: 40px;
     margin-top: 5px;
+    width:30px !important;
 }
 .txnRow{
   margin-bottom: 4px;

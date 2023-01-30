@@ -11,6 +11,37 @@
 				"type": "constructor"
 			},
 			{
+				"anonymous": false,
+				"inputs": [
+					{
+						"indexed": false,
+						"internalType": "bytes32",
+						"name": "_id",
+						"type": "bytes32"
+					},
+					{
+						"indexed": false,
+						"internalType": "bytes32",
+						"name": "_name",
+						"type": "bytes32"
+					},
+					{
+						"indexed": false,
+						"internalType": "bytes32",
+						"name": "_desc",
+						"type": "bytes32"
+					},
+					{
+						"indexed": false,
+						"internalType": "address",
+						"name": "_owner",
+						"type": "address"
+					}
+				],
+				"name": "Log",
+				"type": "event"
+			},
+			{
 				"inputs": [
 					{
 						"internalType": "address",
@@ -260,11 +291,11 @@
 	},
 	"sources": {
 		"contracts\\Product.sol": {
-			"keccak256": "0x137987053b3a282972b1ca3dfe2ec018aabf114a633c9acd54efb49ddbfc8e2a",
+			"keccak256": "0xfe2722f2806e12466c71e6c8817ded01c99c9315cd5eb0546073542eb101af9a",
 			"license": "UNLICENSED",
 			"urls": [
-				"bzz-raw://8c04a79492b5684301886d1e9076276f462e9353bbb50b226384e6a55e4d6608",
-				"dweb:/ipfs/QmVEXMqQpSyksm4R6dGyZb1J8gbsjc2qSnuGgAcjGqrKAU"
+				"bzz-raw://47fd78a02a32cc54c6fa8f3ea28846d4872f831402ebcca69b9c0205cf48f72c",
+				"dweb:/ipfs/Qmf3zZfB7qxPy5qJNRvkbShh3PYPACTdhJm86p64ceweft"
 			]
 		}
 	},

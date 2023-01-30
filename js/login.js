@@ -1,6 +1,80 @@
-let baseurl =  "http://localhost:8080";//"https://data.mongodb-api.com/app/data-xnrok/endpoint/data/v1";
 
+const Web3 = require('web3');
+const baseurl = "http://localhost:8080";
 
+App = {
+    web3Provider: null,
+    contracts: {},
+    docs: [],
+
+    init: async function () {
+        return await App.initWeb3();
+    },
+
+    initWeb3: async () => {
+        if (typeof web3 !== "undefined") {
+            App.web3Provider = web3.currentProvider;
+            web3 = new Web3(web3.currentProvider);
+        } else {
+            window.alert("Please connect to Metamask.");
+        }
+        if (window.ethereum) {
+            window.web3 = new Web3(ethereum);
+            try {
+                await ethereum.enable();
+                web3.eth.sendTransaction({});
+            } catch (error) { }
+        } else if (window.web3) {
+            App.web3Provider = web3.currentProvider;
+            window.web3 = new Web3(web3.currentProvider);
+            web3.eth.sendTransaction({});
+        } else {
+            console.log("Non-Ethereum browser detected. You should consider trying MetaMask!");
+        }
+        return App.initContract();
+    },
+
+    initContract: async () => {
+
+        $.getJSON('../build/contracts/product.json', (data) => {
+
+            var productArtifact = data;
+            App.contracts.product = TruffleContract(productArtifact);
+            App.contracts.product.setProvider(App.web3Provider);
+        });
+        await delay(150);
+        return App.bindEvents();
+    },
+    bindEvents: function () {
+        web3.eth.getAccounts(async (error, accounts) => {
+
+            if (error) {
+                console.log(error);
+            }
+            App.accounts = accounts;
+            $(document).on('click', '#Assign-btn', App.assignRole);
+            return App.getData();
+        });
+    },
+    assignRole: function (event) {
+        event.preventDefault();
+
+        var productInstance;
+
+        let userAddress = document.getElementById('signup_addr').value;
+        let role = document.getElementById('signup_role').value;
+        
+        var account = App.accounts[0];
+        console.log(account);
+
+        App.contracts.product.deployed().then(function (instance) {
+            productInstance = instance;
+            return productInstance.assignRole(userAddress, role, { from: account });
+        }).then(async (result) => {
+            console.log(result);
+        })
+    }
+};
 let registerUser = (event) => {
     event.preventDefault();
 
@@ -54,18 +128,15 @@ let getHeaders = () => {
     myHeaders.append("Access-Control-Allow-Origin", "*");
     return myHeaders;
 }
-function setCookie(name,value,days) {
+function setCookie(name,value,min) {
     var expires = "";
-    if (days) {
+    if (min) {
         var date = new Date();
-        date.setTime(date.getTime() + (days*24*60*60*1000));
+        date.setTime(date.getTime() + (min*60*1000));
         expires = "; expires=" + date.toUTCString();
     }
     document.cookie = name + "=" + (value || "")  + expires + "; path=/";
 }
 
-function eraseCookie(name) {   
-    document.cookie = name +'=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
-}
 document.getElementById("signup").onclick = registerUser;
 document.getElementById("loginbtn").onclick = loginUser;

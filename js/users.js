@@ -1,5 +1,6 @@
 const Web3 = require('web3');
 const baseurl = "http://localhost:8080";
+let currentUser;
 
 App = {
     web3Provider: null,
@@ -128,6 +129,47 @@ let updateUserRole = (address, roleIndex) => {
     return fetch(`${baseurl}/update/user`, requestOptions)
 }
 
+let getUser = (id) => {
+    var myHeaders = new Headers();
+    myHeaders.append("Content-Type", "application/json");
+    myHeaders.append("Access-Control-Request-Headers", "*");
+    myHeaders.append("Access-Control-Allow-Origin", "*");
+    var requestOptions = { method: 'GET', headers: myHeaders, redirect: 'follow' };
+    return fetch(`${baseurl}/user/${id}`, requestOptions)
+}
+let logout = () => {
+    let confirmAction = confirm("Are you sure?");
+    if (confirmAction) {
+      document.cookie.split(";").forEach(function (c) { document.cookie = c.replace(/^ +/, "").replace(/=.*/, "=;expires=" + new Date().toUTCString() + ";path=/"); });
+      window.location.replace("index.html");
+    } else {location.reload();}
+  }
+function getCookie(name) {
+    var nameEQ = name + "=";
+    var ca = document.cookie.split(';');
+    for (var i = 0; i < ca.length; i++) {
+        var c = ca[i];
+        while (c.charAt(0) == ' ') c = c.substring(1, c.length);
+        if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length, c.length);
+    }
+    return null;
+}
+let id = getCookie('id');
+if (id) {
+    getUser(id).then(response => response.json())
+        .then((response) => {
+            console.log("USER : ", response)
+            currentUser = response[0];
+            $('#currentUserName').text(`Welcome ${currentUser.uname} !`);
+            $('#currentUserRole').text(currentUser.role);      
+        }).catch(err => {
+            console.log(err);
+            window.location.replace("index.html");
+        });
+} else {
+    alert("Please Login!")
+    window.location.replace("index.html");
+}
 
 
 
