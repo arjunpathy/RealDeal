@@ -291,11 +291,11 @@
 	},
 	"sources": {
 		"contracts\\Product.sol": {
-			"keccak256": "0xfe2722f2806e12466c71e6c8817ded01c99c9315cd5eb0546073542eb101af9a",
+			"keccak256": "0x4a4a63034cecabe9c4a78aa38919d3563a1b6be26646a0f9a1b987afcd4a89e8",
 			"license": "UNLICENSED",
 			"urls": [
-				"bzz-raw://47fd78a02a32cc54c6fa8f3ea28846d4872f831402ebcca69b9c0205cf48f72c",
-				"dweb:/ipfs/Qmf3zZfB7qxPy5qJNRvkbShh3PYPACTdhJm86p64ceweft"
+				"bzz-raw://ce976c0bbbb070d435244ca38d06604fbc54d6676165b6e2da0aa597c3e6a3e6",
+				"dweb:/ipfs/QmdsYZKC1h6qcneUnt2DjK2d3fo1u17DFSqfqqfso2f1HH"
 			]
 		}
 	},

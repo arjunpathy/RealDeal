@@ -1,8 +1,10 @@
 const Web3 = require('web3');
 const baseurl = "http://localhost:8080";
+// const Html5QrcodeScanner = require("html5-qrcode");
+
 let currentUser;
 
-App = {
+let App = {
 
   web3Provider: null,
   contracts: {},
@@ -11,7 +13,7 @@ App = {
 
 
   init: async function (data) {
-    scannedData = JSON.parse(data);
+    App.scannedData = JSON.parse(data);
     return await App.initWeb3();
   },
 
@@ -54,16 +56,18 @@ App = {
       if (error) {
         console.log(error);
       }
-      return App.fakeProduct(accounts);
+      App.contracts.product.deployed().then(function (instance) {
+        return App.fakeProduct(accounts, instance);
+      });
     });
   },
 
-  fakeProduct: (accounts) => {
+  fakeProduct: (accounts, productInstance) => {
 
     var productInstance;
 
-    var productId = scannedData.productId;
-    var ownerId = scannedData.pOwner;
+    var productId = App.scannedData.productId;
+    var ownerId = App.scannedData.pOwner;
     console.log(productId, ownerId);
     if (!productId || !ownerId) {
       let text = "<tr><td> N/A </td><td> N/A </td><td> Invalid QR </td></tr>"
@@ -73,13 +77,7 @@ App = {
 
     var account = accounts[0];
     console.log(account);
-
-    App.contracts.product.deployed().then(function (instance) {
-
-      productInstance = instance;
-      return productInstance.verifyFakeness(web3.fromAscii(productId), (ownerId), { from: account });
-
-    }).then(function (result) {
+    productInstance.verifyFakeness(web3.fromAscii(productId), (ownerId), { from: account }).then(function (result) {
 
       console.log(result);
 
@@ -118,13 +116,8 @@ function getCookie(name) {
   return null;
 }
 
-let logout = () => {
-  let confirmAction = confirm("Are you sure?");
-  if (confirmAction) {
-    document.cookie.split(";").forEach(function (c) { document.cookie = c.replace(/^ +/, "").replace(/=.*/, "=;expires=" + new Date().toUTCString() + ";path=/"); });
-    window.location.replace("index.html");
-  } else {location.reload();}
-}
+
+
 
 let id = getCookie('id');
 if (id) {
@@ -142,6 +135,40 @@ if (id) {
   alert("Please Login!")
   window.location.replace("index.html");
 }
+
+
+function docReady(fn) {
+  // see if DOM is already available
+  if (document.readyState === "complete"
+    || document.readyState === "interactive") {
+    // call on next available tick
+    setTimeout(fn, 1);
+  } else {
+    document.addEventListener("DOMContentLoaded", fn);
+  }
+}
+docReady(function () {
+  var resultContainer = document.getElementById('qr-reader-results');
+  var lastResult, countResults = 0;
+  if(!countResults){
+    onScanSuccess('{"productId":"-","pOwner":"-","pName":"-","pDesc":"-"}',{});
+  }
+  
+  function onScanSuccess(decodedText, decodedResult) {
+    if (decodedText !== lastResult) {
+      lastResult = decodedText;
+      // Handle on success condition with the decoded message.
+      var audio = new Audio('beep.wav');
+      if(countResults){audio.play();}
+      ++countResults;
+      console.log(`Scan result ${decodedText}`, decodedResult);
+      document.getElementById('qr-reader-results').innerHTML = decodedText;
+      App.init(decodedText);
+    }
+  }
+
+  var html5QrcodeScanner = new Html5QrcodeScanner("qr-reader", { fps: 10, qrbox: 250 });html5QrcodeScanner.render(onScanSuccess);});
+
 
 $(function () {
   $(window).load(function () {

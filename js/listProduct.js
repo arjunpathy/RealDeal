@@ -129,8 +129,9 @@ App = {
 
                 await saveTransaction(txnData).then(async () => {
                     console.log(result);
-                    await updateProduct({ productId, ownerId: pBuyer }).then(() => {
-                        // window.location.reload();
+                    let qr = await generateQR({ productId, pOwner:pBuyer,pName:"", pDesc:"" });
+                    await updateProduct({ productId, ownerId: pBuyer, qr }).then(() => {
+                        window.location.reload();
                         document.getElementById('productId').innerHTML = '';
                     }).catch((err) => console.log(err.message))
                 }).catch((err) => console.log(err.message))
@@ -156,6 +157,14 @@ let formatData = (result) => {
 let delay = (time) => {
     return new Promise(resolve => setTimeout(resolve, time));
 }
+const generateQR = async text => {
+    text = JSON.stringify(text)
+    try {
+      return (await QRCode.toDataURL(text));
+    } catch (err) {
+      console.error(err)
+    }
+  }
 
 let getProdQR = (ids) => {
     let data = { ids: ids }

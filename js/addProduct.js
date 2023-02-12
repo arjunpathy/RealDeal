@@ -82,8 +82,9 @@ App = {
       console.log(qrData)
 
       return productInstance.createProduct(web3.fromAscii(productId), web3.fromAscii(pName), web3.fromAscii(pDesc), account, { from: account });
-    }).then((result) => {
+    }).then(async(result) => {
       console.log("result : ", result);
+      delay(200);
 
       var myHeaders = new Headers();
       myHeaders.append("Content-Type", "application/json");
@@ -134,6 +135,9 @@ App = {
   }
 
 };
+let delay = (time) => {
+  return new Promise(resolve => setTimeout(resolve, time));
+}
 
 let clearValues = (arr) => {
   arr.forEach(element => {

@@ -151,7 +151,7 @@ app.put('/product', (req, res) => {
     dataSource: "Cluster0",
     collection: "products",
     "filter": { productId: req.body.productId },
-    "update": { "$set": { "currentOwner": req.body.ownerId } }
+    "update": { "$set": { "currentOwner": req.body.ownerId,"qr":req.body.qr } }
   });
   config.url = `${baseurl}/action/updateOne`;
   config.data = data;

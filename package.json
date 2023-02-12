@@ -9,7 +9,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/maddydevgits/fake-product-identification-blockchain.git"
+    "url": "git+https://github.com/arjunpathy/RealDeal.git"
   },
   "keywords": [
     "blockchain",
@@ -22,10 +22,11 @@
   },
   "homepage": "",
   "devDependencies": {
-    "html5-qrcode": "^2.2.0",
+    "html5-qrcode": "^2.3.4",
     "lite-server": "^2.6.1"
   },
   "dependencies": {
+    "qrcode": "^1.5.1",
     "web3": "^1.8.1"
   }
 }

@@ -20,7 +20,8 @@
 				<span id="currentUserRole"></span>
 			</div>
 			<div style="width:60%; text-align: center;padding-top: 5px;">
-				<a class="navbar-brand" style="color: #573b8a;" href="verify.html">Real Deal<span style="color: white;">Fake Product Identification Through Blockchain</span></a>		
+				<a class="navbar-brand" style="color: #573b8a;" href="verify.html">Real Deal<span
+						style="color: white;">Fake Product Identification Through Blockchain</span></a>
 			</div>
 			<div style="width:6%;margin-left: 10% ;text-align: center;padding-top: 10px;">
 				<button class="submit" style="background-color: #ca4242;" onclick="logout()">Logout</button>
@@ -50,7 +51,7 @@
 
 		<div style="width: 33% ;">
 			<div id="qr-reader" style="width:300px"></div>
-			<div id="qr-reader-results"></div>
+			<div id="qr-reader-results" style="display: block;"></div>
 		</div>
 		<div class="scan-table">
 			<table class="table table-dark table-striped" style="border-radius: 25px;">
@@ -62,53 +63,33 @@
 					</tr>
 				</thead>
 				<tbody id="logdata">
-					<tr><td>-</td><td>-</td><td>-</td></tr>
+					<tr>
+						<td>-</td>
+						<td>-</td>
+						<td>-</td>
+					</tr>
 				</tbody>
 			</table>
 		</div>
 	</div>
 
 	<script src="js/jquery.min.js"></script>
-	<script src="js/popper.js"></script>
+	<script src="js/html5-qrcode.min.js"></script>
 	<script src="js/bootstrap.min.js"></script>
 	<script src="js/main.js"></script>
-	<script src="https://unpkg.com/html5-qrcode"></script>
 	<script src="js/web3.min.js"></script>
 	<script src="js/truffle-contract.js"></script>
-	<script src="js/verifyProduct.js"></script>
+	<script src="js/verifyProduct.js" type="module"></script>
 	<script>
-		function docReady(fn) {
-			// see if DOM is already available
-			if (document.readyState === "complete"
-				|| document.readyState === "interactive") {
-				// call on next available tick
-				setTimeout(fn, 1);
-			} else {
-				document.addEventListener("DOMContentLoaded", fn);
-			}
+		let logout = () => {
+			let confirmAction = confirm("Are you sure?");
+			if (confirmAction) {
+				document.cookie.split(";").forEach(function (c) { document.cookie = c.replace(/^ +/, "").replace(/=.*/, "=;expires=" + new Date().toUTCString() + ";path=/"); });
+				window.location.replace("index.html");
+			} else { location.reload(); }
 		}
-
-		docReady(function () {
-			var resultContainer = document.getElementById('qr-reader-results');
-			var lastResult, countResults = 0;
-			function onScanSuccess(decodedText, decodedResult) {
-				if (decodedText !== lastResult) {
-					++countResults;
-					lastResult = decodedText;
-					// Handle on success condition with the decoded message.
-					var audio = new Audio('beep.wav');
-					audio.play();
-					console.log(`Scan result ${decodedText}`, decodedResult);
-					document.getElementById('qr-reader-results').innerHTML = decodedText;
-					App.init(decodedText);
-				}
-			}
-
-			var html5QrcodeScanner = new Html5QrcodeScanner(
-				"qr-reader", { fps: 10, qrbox: 250 });
-			html5QrcodeScanner.render(onScanSuccess);
-		});
 	</script>
+
 </body>
 
 </html>
