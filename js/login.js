@@ -63,7 +63,7 @@ App = {
 
         let userAddress = document.getElementById('signup_addr').value;
         let role = document.getElementById('signup_role').value;
-        
+
         var account = App.accounts[0];
         console.log(account);
 
@@ -85,18 +85,19 @@ let registerUser = (event) => {
     var addr = document.getElementById('signup_addr').value;
     console.log(id, uname, password, role, addr);
 
+    if (id && uname && password && role && addr) {
 
+        var myHeaders = getHeaders();
 
-    var myHeaders = getHeaders();
+        var raw = JSON.stringify({ uname, password, role, id, address: addr, isLoggedId: false });
 
-    var raw = JSON.stringify({ uname, password, role, id, address: addr, isLoggedId: false });
+        var requestOptions = { method: 'POST', headers: myHeaders, body: raw, redirect: 'follow' };
 
-    var requestOptions = { method: 'POST', headers: myHeaders, body: raw, redirect: 'follow' };
-
-    fetch(`${baseurl}/user`, requestOptions)
-        .then(response => response.text())
-        .then(result => { console.log(result); $("#loginlabel").trigger("click"); })
-        .catch(error => console.log('error', error));
+        fetch(`${baseurl}/user`, requestOptions)
+            .then(response => response.text())
+            .then(result => { console.log(result); $("#loginlabel").trigger("click"); })
+            .catch(error => console.log('error', error));
+    }
 }
 
 let loginUser = (event) => {
@@ -104,21 +105,23 @@ let loginUser = (event) => {
 
     var id = document.getElementById('login_uid').value;
     var password = document.getElementById('login_pwd').value;
+    if (id && password) {
 
-    var myHeaders = getHeaders();
-    var raw = JSON.stringify({ id, password });
-    var requestOptions = { method: 'POST', headers: myHeaders, body: raw, redirect: 'follow' };
-    fetch(`${baseurl}/login`, requestOptions)
-        .then(response => response.text())
-        .then(result => {
-            if (result === 'true'){
-                setCookie("id", id, 10);
-                window.location.replace("verify.html");
+        var myHeaders = getHeaders();
+        var raw = JSON.stringify({ id, password });
+        var requestOptions = { method: 'POST', headers: myHeaders, body: raw, redirect: 'follow' };
+        fetch(`${baseurl}/login`, requestOptions)
+            .then(response => response.text())
+            .then(result => {
+                if (result === 'true') {
+                    setCookie("id", id, 10);
+                    window.location.replace("verify.html");
                 }
-            else
-                alert("Invalid Credentials! Try Again.")
-        })
-        .catch(error => console.log('error', error));
+                else
+                    alert("Invalid Credentials! Try Again.")
+            })
+            .catch(error => console.log('error', error));
+    }
 
 }
 let getHeaders = () => {
@@ -128,14 +131,14 @@ let getHeaders = () => {
     myHeaders.append("Access-Control-Allow-Origin", "*");
     return myHeaders;
 }
-function setCookie(name,value,min) {
+function setCookie(name, value, min) {
     var expires = "";
     if (min) {
         var date = new Date();
-        date.setTime(date.getTime() + (min*60*1000));
+        date.setTime(date.getTime() + (min * 60 * 1000));
         expires = "; expires=" + date.toUTCString();
     }
-    document.cookie = name + "=" + (value || "")  + expires + "; path=/";
+    document.cookie = name + "=" + (value || "") + expires + "; path=/";
 }
 
 document.getElementById("signup").onclick = registerUser;

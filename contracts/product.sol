@@ -37,7 +37,6 @@ contract product {
     bytes32[] memory names = new bytes32[](productsCount);
     bytes32[] memory descriptions = new bytes32[](productsCount);
     address[] memory ownerIds = new address[](productsCount);
-
        
         for(uint i = 0; i < productsCount; i++) {
             ProductStruct storage prod = products[productIds[i]];
