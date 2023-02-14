@@ -326,7 +326,7 @@ if (id) {
         .then((response) => {
             console.log("USER : ", response)
             currentUser = response[0];
-            $('#pOwner').val(currentUser.address);
+            $('#pBuyer').val(currentUser.address);
             $('#currentUserName').text(`Welcome ${currentUser.uname} !`);
             $('#currentUserRole').text(currentUser.role);
         }).catch(err => {

@@ -114,7 +114,7 @@ let loginUser = (event) => {
             .then(response => response.text())
             .then(result => {
                 if (result === 'true') {
-                    setCookie("id", id, 500);
+                    setCookie("id", id, 2);
                     window.location.replace("verify.html");
                 }
                 else
@@ -131,11 +131,11 @@ let getHeaders = () => {
     myHeaders.append("Access-Control-Allow-Origin", "*");
     return myHeaders;
 }
-function setCookie(name, value, min) {
+function setCookie(name, value, days) {
     var expires = "";
-    if (min) {
+    if (days) {
         var date = new Date();
-        date.setTime(date.getTime() + (min * 60 * 1000));
+        date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
         expires = "; expires=" + date.toUTCString();
     }
     document.cookie = name + "=" + (value || "") + expires + "; path=/";

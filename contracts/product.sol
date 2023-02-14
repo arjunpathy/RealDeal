@@ -31,6 +31,8 @@ contract product {
 
     function createProduct(bytes32 _id, bytes32 _name, bytes32 _desc, address _owner,uint _price) public {
         emit Log(_id,_name,_desc,_owner);
+
+        require(products[_id].price == 0, "Product ID already exists");
         require(roles[_owner] == uint8(Role.ADMIN), "Only admin can create a product.");
         products[_id] = ProductStruct(_id, _name, _desc, _owner,_price);
         productIds.push(_id);
