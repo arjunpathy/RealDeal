@@ -623,6 +623,8 @@ progress {
 .desc-box{
   height: 80px;
     position: relative;
+    width: 66%;
+    margin-left: 4%;
 }
 .ic1 {
   margin-top: 40px;

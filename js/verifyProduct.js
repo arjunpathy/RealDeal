@@ -1,6 +1,5 @@
 const Web3 = require('web3');
 const baseurl = "http://localhost:8080";
-// const Html5QrcodeScanner = require("html5-qrcode");
 
 let currentUser;
 

@@ -67,13 +67,14 @@ App = {
     var productId = document.getElementById('productId').value;
     var pName = document.getElementById('pName').value;
     var pDesc = document.getElementById('pDesc').value;
+    var price = document.getElementById('price').value;
     let qrData = "";
 
     // var account = accounts[0];
     let account = pOwner;
 
     console.log(account);
-    setCookie("account", account, 1);
+    setCookie("account", account, 2);
 
     App.contracts.product.deployed().then(async (instance) => {
       productInstance = instance;
@@ -81,7 +82,7 @@ App = {
       qrData = await generateQR({ productId, pOwner, pName, pDesc });
       console.log(qrData)
 
-      return productInstance.createProduct(web3.fromAscii(productId), web3.fromAscii(pName), web3.fromAscii(pDesc), account, { from: account });
+      return productInstance.createProduct(web3.fromAscii(productId), web3.fromAscii(pName), web3.fromAscii(pDesc), account, price, { from: account });
     }).then(async(result) => {
       console.log("result : ", result);
       delay(200);
@@ -96,6 +97,7 @@ App = {
         productId: productId,
         ownerId: pOwner,
         ownerAddress: result.receipt.from,
+        price: price
       });
 
       var prodData = JSON.stringify({
@@ -103,7 +105,8 @@ App = {
         productName: pName,
         productDesc: pDesc,
         currentOwner: pOwner,
-        qr: qrData
+        price: price,
+        qr: qrData,
       });
 
       var requestOptions = {
@@ -122,7 +125,7 @@ App = {
         })
         .catch(error => console.log('error', error));
 
-      clearValues(['productId', 'pOwner', 'pName', 'pDesc']);
+      clearValues(['productId', 'pOwner', 'pName', 'pDesc','price']);
 
     }).catch((err) => {
       console.log(err.message);

@@ -60,6 +60,7 @@
 								<td>Product Id</td>
 								<td>Name</td>
 								<td>Description</td>
+								<td style="width: 10px;">Price</td>
 								<td>Owner Id</td>
 								<td>QR</td>
 								<td style="width: 12%;">Action</td>
@@ -77,12 +78,19 @@
 		</div>
 		<div style="width: 25%; padding: 10px;">
 			<div class="form">
-				<div class="title">Sell Here</div>
+				<div class="title">Buy Here</div>
 				<!-- <div class="subtitle">Let's create your account!</div> -->
-				<div class="input-container ic1">
-					<input id="productId" class="input" type="text" placeholder=" " />
-					<div class="cut"></div>
-					<label for="productId" class="placeholder">Product Id</label>
+				<div style="width: 100%; display: inline-flex;">
+					<div class="input-container ic1" style="width: 65%;">
+						<input id="productId" class="input" type="text" placeholder=" " />
+						<div class="cut"></div>
+						<label for="productId" class="placeholder">Product Id</label>
+					</div>
+					<div class="input-container ic1" style="width: 35%;margin-left: 5px;">
+						<input id="price" class="input" type="text" placeholder=" " />
+						<div class="cut" style="width: 60px;"></div>
+						<label for="price" class="placeholder">Price</label>
+					</div>
 				</div>
 				<div class="input-container ic2">
 					<input id="pOwner" class="input" type="text" placeholder=" " />
@@ -94,7 +102,7 @@
 					<div class="cut"></div>
 					<label for="pBuyer" class="placeholder">Buyer Id</label>
 				</div>
-				<button type="submit" class="submit" style="margin-top: 38px;" id="sell-btn">Sell</button>
+				<button type="submit" class="submit" style="margin-top: 38px;" id="sell-btn">Buy</button>
 
 			</div>
 		</div>

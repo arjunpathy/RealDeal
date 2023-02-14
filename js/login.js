@@ -114,7 +114,7 @@ let loginUser = (event) => {
             .then(response => response.text())
             .then(result => {
                 if (result === 'true') {
-                    setCookie("id", id, 10);
+                    setCookie("id", id, 500);
                     window.location.replace("verify.html");
                 }
                 else
